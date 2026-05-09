@@ -1,0 +1,8 @@
+.next/dev/
+.next/cache/
+.next/trace/
+.next/trace-build/
+.next/turbopack/
+.next/diagnostics/
+.next/BUILD_ID
+.next/dev虚幻

@@ -1,0 +1,43 @@
+{
+  "name": "wechat-ai-formatter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "公众号AI排版助手 — AI一键排版，Markdown转微信，80+套模板，支持旅游、政务等多风格",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --turbopack",
+    "start": "next start",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "cf:build": "opennextjs-cloudflare build && cp _worker.js .open-next/_worker.js && mv .open-next/assets/_next .open-next/ && mv .open-next/assets/*.png .open-next/ 2>/dev/null; mv .open-next/assets/*.svg .open-next/ 2>/dev/null; rm -rf .open-next/assets",
+    "cf:preview": "opennextjs-cloudflare preview",
+    "cf:deploy": "opennextjs-cloudflare deploy"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.71",
+    "@ai-sdk/openai": "^3.0.53",
+    "@lobehub/icons": "^5.6.0",
+    "@vercel/analytics": "^2.0.1",
+    "ai": "^6.0.168",
+    "cheerio": "^1.2.0",
+    "lucide-react": "^1.11.0",
+    "marked": "^17.0.4",
+    "next": "^16.2.4",
+    "node-html-parser": "^7.1.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.13",
+    "@opennextjs/cloudflare": "^1.19.5",
+    "@tailwindcss/postcss": "^4",
+    "@types/marked": "^5.0.2",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "playwright": "^1.59.1",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "wrangler": "^4.87.0"
+  }
+}

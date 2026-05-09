@@ -1,0 +1,474 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #f8f6f3;
+  --foreground: #2d2d2d;
+  --neo-bg: #f8f6f3;
+  --neo-surface: #ffffff;
+  --neo-ink: #2d2d2d;
+  --neo-muted: #8a8a8a;
+  /* 干净现代配色 */
+  --neo-yellow: #e8a838;
+  --neo-pink: #d4687a;
+  --neo-cyan: #5a9ab5;
+  --neo-green: #5f9f7f;
+  --neo-app-header: #faf8f5;
+  --neo-section-header: #f5f2ed;
+  --neo-template-header: #f5f2ed;
+  --neo-sub-header: #f0ece5;
+  --neo-stage: #f5f2ed;
+  --neo-on-header: #2d2d2d;
+  --neo-shadow-core: #d4cfc8;
+  --neo-line: #e0dbd4;
+  --neo-border: 2px solid var(--neo-line);
+  --neo-border-thin: 1.5px solid var(--neo-line);
+  --neo-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --neo-shadow-lg: 0 4px 16px rgba(0,0,0,0.08);
+  /* 预览手机壳 */
+  --neo-phone-frame: #ffffff;
+  --neo-phone-rim: #2d2d2d;
+  --neo-phone-status-bg: rgba(243, 244, 246, 0.92);
+  --neo-phone-status-border: #e5e7eb;
+  --neo-phone-screen: #ffffff;
+  --neo-phone-notch: #2d2d2d;
+  --neo-on-accent: #ffffff;
+}
+
+.dark {
+  --background: #1c1c1e;
+  --foreground: #e8e6e3;
+  --neo-bg: #1c1c1e;
+  --neo-surface: #2c2c2e;
+  --neo-ink: #e8e6e3;
+  --neo-muted: #8e8e93;
+  --neo-yellow: #d4a03a;
+  --neo-pink: #b85c6e;
+  --neo-cyan: #5a8aad;
+  --neo-green: #5a8f72;
+  --neo-app-header: #2c2c2e;
+  --neo-section-header: #3a3a3c;
+  --neo-template-header: #3a3a3c;
+  --neo-sub-header: #38383a;
+  --neo-stage: #323234;
+  --neo-on-header: #e8e6e3;
+  --neo-shadow-core: #111112;
+  --neo-line: #48484a;
+  --neo-border: 2px solid var(--neo-line);
+  --neo-border-thin: 1.5px solid var(--neo-line);
+  --neo-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  --neo-shadow-lg: 0 4px 16px rgba(0,0,0,0.3);
+  --neo-phone-frame: #2a2a2c;
+  --neo-phone-rim: #111112;
+  --neo-phone-status-bg: rgba(44, 44, 46, 0.96);
+  --neo-phone-status-border: #3a3a3c;
+  --neo-phone-screen: #262628;
+  --neo-phone-notch: #0e0e10;
+  --neo-on-accent: #0e0e0e;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.neo-app-bg {
+  background:
+    linear-gradient(90deg, rgba(21, 21, 21, 0.045) 1px, transparent 1px),
+    linear-gradient(rgba(21, 21, 21, 0.045) 1px, transparent 1px), var(--neo-bg);
+  background-size: 28px 28px;
+  color: var(--neo-ink);
+}
+
+.dark .neo-app-bg {
+  background:
+    linear-gradient(90deg, rgba(237, 230, 216, 0.045) 1px, transparent 1px),
+    linear-gradient(rgba(237, 230, 216, 0.045) 1px, transparent 1px), var(--neo-bg);
+}
+
+.neo-panel {
+  background-color: var(--neo-surface);
+  border: 1.5px solid var(--neo-line);
+  border-radius: 12px;
+}
+
+.neo-panel-strong {
+  background-color: var(--neo-stage);
+  border: 1.5px solid var(--neo-line);
+  border-radius: 12px;
+}
+
+.neo-strip {
+  background-color: var(--neo-section-header);
+  border-bottom: 1.5px solid var(--neo-line);
+  border-radius: 12px 12px 0 0;
+}
+
+.neo-button {
+  border: 1.5px solid var(--neo-line);
+  border-radius: 8px;
+  color: var(--neo-ink);
+  font-weight: 500;
+  transition: all 150ms ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.neo-button:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.neo-button:active {
+  transform: scale(0.98);
+}
+
+.neo-button-primary {
+  background: linear-gradient(135deg, #67d99a, #4cc38a);
+  border-color: #4cc38a;
+  color: #1a1a1a;
+  box-shadow: 0 1px 4px rgba(76, 195, 138, 0.2);
+}
+
+.neo-button-primary:hover {
+  box-shadow: 0 2px 10px rgba(76, 195, 138, 0.3);
+}
+
+.neo-button-secondary {
+  background: linear-gradient(135deg, #e8a838, #d4952e);
+  border-color: #d4952e;
+}
+
+.neo-button-ghost {
+  background: #f0f0eb;
+  color: var(--neo-ink);
+  border-color: #d8d4cc;
+}
+
+.neo-button-ghost:hover {
+  background: #e8e5de;
+  border-color: #ccc8c0;
+}
+
+.dark .neo-button-ghost {
+  background: #3a3a3c;
+  border-color: #5a5a5e;
+}
+
+.dark .neo-button-ghost:hover {
+  background: #48484a;
+  border-color: #6a6a6e;
+}
+
+.neo-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  transform: none;
+  box-shadow: none;
+}
+
+.neo-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+  box-shadow: 2px 2px 0 0 var(--neo-shadow-core);
+}
+
+.neo-input {
+  background-color: var(--neo-surface);
+  border: var(--neo-border-thin);
+  border-radius: 0;
+  color: var(--neo-ink);
+  box-shadow: 3px 3px 0 0 var(--neo-shadow-core);
+}
+
+.neo-input:focus {
+  outline: 3px solid var(--neo-pink);
+  outline-offset: 2px;
+}
+
+.neo-tab {
+  border: 1.5px solid var(--neo-line);
+  border-radius: 8px;
+  background-color: var(--neo-surface);
+  color: var(--neo-ink);
+  font-weight: 500;
+  transition: all 150ms ease;
+  cursor: pointer;
+}
+
+.neo-tab:hover {
+  background-color: var(--neo-section-header);
+}
+
+.neo-tab-active {
+  background: linear-gradient(135deg, var(--neo-green), #4c8e6f);
+  color: #ffffff;
+  border-color: var(--neo-green);
+  font-weight: 600;
+}
+
+.neo-toolbar-button {
+  min-width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--neo-line);
+  border-radius: 6px;
+  background-color: var(--neo-surface);
+  color: var(--neo-ink);
+  font-weight: 700;
+  font-size: 12px;
+  transition: all 120ms ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neo-toolbar-button:hover {
+  background: linear-gradient(135deg, var(--neo-yellow) 60%, #e8b830);
+  border-color: var(--neo-line);
+}
+
+.neo-toolbar-button:active {
+  transform: scale(0.95);
+}
+
+.neo-modal-backdrop {
+  background-color: rgba(17, 17, 17, 0.72);
+}
+
+.dark .neo-modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.82);
+}
+
+.neo-modal {
+  background-color: var(--neo-surface);
+  border: var(--neo-border);
+  border-radius: 0;
+  box-shadow: var(--neo-shadow-lg);
+}
+
+.neo-range {
+  width: 100%;
+  height: 28px;
+  appearance: none;
+  background: transparent;
+  accent-color: var(--neo-pink);
+}
+
+.neo-range::-webkit-slider-runnable-track {
+  height: 10px;
+  background: linear-gradient(90deg, var(--neo-pink), var(--neo-cyan));
+  border: var(--neo-border-thin);
+  box-shadow: 3px 3px 0 0 var(--neo-shadow-core);
+}
+
+.neo-range::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: -7px;
+  appearance: none;
+  background-color: var(--neo-yellow);
+  border: var(--neo-border);
+  border-radius: 0;
+  box-shadow: 2px 2px 0 0 var(--neo-shadow-core);
+}
+
+.neo-range:focus-visible {
+  outline: 3px solid var(--neo-pink);
+  outline-offset: 3px;
+}
+
+.neo-range::-moz-range-track {
+  height: 10px;
+  background: linear-gradient(90deg, var(--neo-pink), var(--neo-cyan));
+  border: var(--neo-border-thin);
+  box-shadow: 3px 3px 0 0 var(--neo-shadow-core);
+}
+
+.neo-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: var(--neo-yellow);
+  border: var(--neo-border);
+  border-radius: 0;
+  box-shadow: 2px 2px 0 0 var(--neo-shadow-core);
+}
+
+.neo-text-muted {
+  color: var(--neo-muted);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.neo-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.neo-scrollbar::-webkit-scrollbar-track {
+  background: var(--neo-surface);
+  border-left: 2px solid var(--neo-line);
+}
+
+.neo-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--neo-yellow);
+  border: 2px solid var(--neo-ink);
+  box-shadow: 2px 2px 0 0 var(--neo-shadow-core);
+}
+
+.neo-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--neo-pink);
+}
+
+.neo-scrollbar::-webkit-scrollbar-thumb:active {
+  background: var(--neo-cyan);
+}
+
+.neo-scrollbar {
+  scrollbar-width: auto;
+  scrollbar-color: var(--neo-yellow) var(--neo-surface);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 预览手机外壳 — 极简风格，去掉拟物化的 notch/状态条等装修 */
+.neo-phone-shell {
+  overflow: hidden;
+  background-color: var(--neo-phone-screen);
+  border: 2px solid var(--neo-phone-rim);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.dark .neo-phone-shell {
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.32),
+    0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+/* 顶部极简指示条 — 取代 notch/状态条 */
+.neo-phone-top-bar {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.neo-phone-top-bar::after {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--neo-line);
+  opacity: 0.5;
+}
+
+/* 内容区 */
+.neo-phone-content {
+  padding: 0 16px 24px;
+}
+
+.neo-preview-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.neo-preview-empty-icon {
+  opacity: 0.25;
+  margin-bottom: 4px;
+}
+
+.neo-preview-empty-text {
+  color: var(--neo-muted);
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* 公众号原始内容隔离 - 保持原有样式，只限制宽度 */
+.original-content {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.original-content > * {
+  max-width: 100% !important;
+}
+
+/* 表格回退样式 — 当微信原始样式被清洗时保证表格可读 */
+.original-content table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  margin: 10px 0 !important;
+  display: table !important;
+  box-sizing: border-box !important;
+  border: 2px solid #999 !important;
+}
+
+.original-content table td,
+.original-content table th {
+  border: 1.5px solid #aaa !important;
+  padding: 10px 14px !important;
+  vertical-align: middle !important;
+  display: table-cell !important;
+  background-color: #fafafa !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  color: #333 !important;
+}
+
+.original-content table tr {
+  display: table-row !important;
+}
+
+.original-content table tbody,
+.original-content table thead,
+.original-content table tfoot {
+  display: table-row-group !important;
+}
+
+/* 图片处理 */
+.original-content img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}
+
+.neo-preview-empty-hint {
+  color: var(--neo-muted);
+  font-size: 12px;
+  opacity: 0.6;
+  margin: 0;
+}
