@@ -15,6 +15,8 @@ export { DOQueueHandler } from "./.build/durable-objects/queue.js";
 export { DOShardedTagCache } from "./.build/durable-objects/sharded-tag-cache.js";
 //@ts-expect-error: Will be resolved by wrangler build
 export { BucketCachePurge } from "./.build/durable-objects/bucket-cache-purge.js";
+//@ts-expect-error: Will be resolved by wrangler build
+import { handler as serverHandler } from "./server-functions/default/handler.mjs";
 export default {
     async fetch(request, env, ctx) {
         return runWithCloudflareRequestContext(request, env, ctx, async () => {
@@ -44,9 +46,7 @@ export default {
             if (reqOrResp instanceof Response) {
                 return reqOrResp;
             }
-            // @ts-expect-error: resolved by wrangler build
-            const { handler } = await import("./server-functions/default/handler.mjs");
-            return handler(reqOrResp, env, ctx, request.signal);
+            return serverHandler(reqOrResp, env, ctx, request.signal);
         });
     },
 };
