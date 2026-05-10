@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "biome lint .",
     "format": "biome format --write .",
-    "cf:build": "opennextjs-cloudflare build && cp _worker.js .open-next/_worker.js && npx esbuild .open-next/_worker.js --bundle --outfile=.open-next/_worker-bundled.js --format=esm --platform=node '--external:cloudflare:*' && mv .open-next/_worker-bundled.js .open-next/_worker.js && mv .open-next/assets/_next .open-next/ 2>/dev/null; mv .open-next/assets/*.png .open-next/ 2>/dev/null; mv .open-next/assets/*.svg .open-next/ 2>/dev/null; rm -rf .open-next/assets 2>/dev/null",
+    "cf:build": "opennextjs-cloudflare build && cp _worker.js .open-next/_worker.js && mv .open-next/assets/_next .open-next/ 2>/dev/null; mv .open-next/assets/*.png .open-next/ 2>/dev/null; mv .open-next/assets/*.svg .open-next/ 2>/dev/null; rm -rf .open-next/assets 2>/dev/null",
     "cf:preview": "opennextjs-cloudflare preview",
     "cf:deploy": "opennextjs-cloudflare deploy"
   },

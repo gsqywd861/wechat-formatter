@@ -37,8 +37,10 @@ export default {
             }
             // Serve static assets from ASSETS binding (Cloudflare Pages built-in)
             // 直接 return，不允许 fallthrough 到 Next server handler，防止 404/竞态
+            // 注意：env.ASSETS.fetch() 必须传 URL string 而非 Request 对象
             if (url.pathname.startsWith("/_next/") || url.pathname === "/logo.png" || url.pathname === "/og-image.png") {
-                const assetResponse = await env.ASSETS.fetch(request);
+                const assetUrl = new URL(url.pathname, "https://assets.local");
+                const assetResponse = await env.ASSETS.fetch(assetUrl.toString());
                 return assetResponse;
             }
             // - `Request`s are handled by the Next server
