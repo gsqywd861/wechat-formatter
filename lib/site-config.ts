@@ -6,10 +6,10 @@ export const SITE_URL = `https://${SITE_HOST}` as const;
 
 export const SITE_BRAND = "公众号AI排版助手";
 
-export const SITE_PRODUCT_NAME = "AI 一键排版 · Markdown 转微信 · 80+ 套模板";
+export const SITE_PRODUCT_NAME = "AI一键排版·自动转公众号·超多模板";
 
 /** 默认 <title>：品牌前置，兼顾检索词 */
-export const SITE_TITLE_DEFAULT = `${SITE_BRAND} — AI 一键排版 · Markdown 转微信 · 80+ 套模板`;
+export const SITE_TITLE_DEFAULT = "公众号AI排版助手-AI一键排版-自动转公众号+超多模板";
 
 /**
  * <meta name="description">

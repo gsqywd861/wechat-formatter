@@ -6,5 +6,11 @@
   "compatibility_flags": [
     "nodejs_compat",
     "global_fetch_strictly_public"
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "config_store",
+      "id": "32420498d6664ee1bcbd2922ea3f9ac6"
+    }
   ]
 }

@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { aiStorageKeys, openRouterConfig } from "../_lib/formatter-constants";
 import { getDeviceId } from "../_lib/device-id";
+import { saveConfigToCloud } from "../_lib/cloud-config";
 import type { AiProviderType } from "../_types/formatter";
 import type { ShowToast } from "./use-toast";
 
 /**
  * 使用设备 ID 作为前缀，确保 AI 设置与当前设备绑定。
  * 即使浏览器缓存被清除，只要 localStorage 未被完全抹除，仍可恢复。
+ * 保存时同时同步到云端 KV，保障跨设备可用。
  */
 function useDeviceScopedKey(baseKey: string): string {
   const deviceId = useMemo(() => getDeviceId(), []);
@@ -14,6 +16,7 @@ function useDeviceScopedKey(baseKey: string): string {
 }
 
 export function useAiSettings(showToast: ShowToast) {
+  const deviceId = useMemo(() => getDeviceId(), []);
   const [showAiConfigModal, setShowAiConfigModal] = useState(false);
   const [aiProviderType, setAiProviderType] = useState<AiProviderType>("openrouter");
   const [aiBaseUrl, setAiBaseUrl] = useState<string>(openRouterConfig.baseUrl);
@@ -58,7 +61,7 @@ export function useAiSettings(showToast: ShowToast) {
     setAiApiKey(trimmedApiKey);
     setAiModel(trimmedModel);
     setShowAiConfigModal(false);
-    showToast("AI 配置已保存");
+    showToast("您的设置已成功保存，下次打开页面自动加载");
   }, [aiProviderType, aiBaseUrl, aiApiKey, aiModel, keyProvider, keyBaseUrl, keyApiKey, keyModel, showToast]);
 
   const clearAiSettings = useCallback(() => {
@@ -73,6 +76,36 @@ export function useAiSettings(showToast: ShowToast) {
     showToast("AI 配置已清空");
   }, [keyProvider, keyBaseUrl, keyApiKey, keyModel, showToast]);
 
+  /** 从云端配置覆盖本地 AI 设置 */
+  const applyCloudAiConfig = useCallback(
+    (cloudAi: { provider: string; baseUrl: string; apiKey: string; model: string }) => {
+      localStorage.setItem(keyProvider, cloudAi.provider);
+      localStorage.setItem(keyBaseUrl, cloudAi.baseUrl);
+      localStorage.setItem(keyApiKey, cloudAi.apiKey);
+      localStorage.setItem(keyModel, cloudAi.model);
+      setAiProviderType(cloudAi.provider as AiProviderType);
+      setAiBaseUrl(cloudAi.baseUrl);
+      setAiApiKey(cloudAi.apiKey);
+      setAiModel(cloudAi.model);
+    },
+    [keyProvider, keyBaseUrl, keyApiKey, keyModel],
+  );
+
+  // 标记初始加载，避免首次加载同步到云端
+  const isInitialMountAi = useRef(true);
+
+  // 响应式同步到云端（不阻塞 UI 渲染）
+  useEffect(() => {
+    if (isInitialMountAi.current) {
+      isInitialMountAi.current = false;
+      return;
+    }
+    if (!aiApiKey) return;
+    saveConfigToCloud(deviceId, {
+      ai: { provider: aiProviderType, baseUrl: aiBaseUrl, apiKey: aiApiKey, model: aiModel },
+    });
+  }, [aiProviderType, aiBaseUrl, aiApiKey, aiModel, deviceId]);
+
   return {
     showAiConfigModal,
     setShowAiConfigModal,
@@ -86,5 +119,6 @@ export function useAiSettings(showToast: ShowToast) {
     setAiModel,
     saveAiSettings,
     clearAiSettings,
+    applyCloudAiConfig,
   };
 }

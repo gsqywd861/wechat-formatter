@@ -98,6 +98,23 @@ export default function Home() {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const aiSettings = useAiSettings(showToast);
   const weChatSettings = useWeChatSettings();
+  const deviceIdRef = useRef<string | null>(null);
+
+  // 页面加载时从云端加载配置（只执行一次）
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { getDeviceId: getDid } = await import("./_lib/device-id");
+      const { loadConfigFromCloud } = await import("./_lib/cloud-config");
+      const did = getDid();
+      deviceIdRef.current = did;
+      const { config } = await loadConfigFromCloud(did);
+      if (cancelled || !config) return;
+      if (config.wechat) weChatSettings.applyCloudConfig(config.wechat);
+      if (config.ai) aiSettings.applyCloudAiConfig(config.ai);
+    })();
+    return () => { cancelled = true; };
+  }, []);
   const wordCount = useWordCount(inputText);
   const copyToClipboard = useClipboardCopy(showToast);
   const { syncScroll, setSyncScroll, previewRef, handleInputScroll, handlePreviewScroll } =
@@ -396,6 +413,34 @@ export default function Home() {
     return firstLine || "未命名文章";
   }, [inputText]);
 
+  // 稳定化回调引用，避免因重新创建导致子组件 re-render
+  const handleCloseWeChat = useCallback(() => setShowWeChatModal(false), []);
+  const handleWeChatResult = useCallback(
+    (msg: string, type: "success" | "error") => showToast(msg, type),
+    [showToast],
+  );
+  const handleCloseImage = useCallback(() => setShowImageModal(false), []);
+  const handleCloseAi = useCallback(() => aiSettings.setShowAiConfigModal(false), []);
+  const handleOpenAi = useCallback(() => aiSettings.setShowAiConfigModal(true), []);
+  const handleRestoreSample = useCallback(() => setInputText(sampleText), []);
+  const handleClearInput = useCallback(() => setInputText(""), []);
+  const handleOpenImporter = useCallback(() => setShowTemplateImporter(true), []);
+  const handlePublish = useCallback(() => setShowWeChatModal(true), []);
+  const handleTogglePreview = useCallback(() => {
+    setPreviewMode((prev) => (prev === "original" ? "template" : "original"));
+  }, []);
+  const handleResetTweaks = useCallback(() => setFormatTweaks(DEFAULT_FORMAT_TWEAKS), []);
+  const handleCloseReward = useCallback(() => setShowReward(false), []);
+  const handleCloseImporter = useCallback(() => setShowTemplateImporter(false), []);
+  const handleCloseTemplateEditor = useCallback(() => setEditTemplate(null), []);
+  const handleDeleteCurrentTemplate = useCallback(() => {
+    if (editTemplate) handleDeleteTemplate(editTemplate);
+  }, [editTemplate, handleDeleteTemplate]);
+  const handleEditTemplateInstance = useCallback(
+    (t: TemplateConfig) => setEditTemplate(t),
+    [],
+  );
+
   return (
     <main className="h-screen overflow-hidden neo-app-bg flex flex-col font-sans relative">
       <Toast toast={toast} />
@@ -403,7 +448,7 @@ export default function Home() {
       <ImageInsertModal
         open={showImageModal}
         onConfirm={markdownTools.handleConfirmImage}
-        onClose={() => setShowImageModal(false)}
+        onClose={handleCloseImage}
         onLocalImage={markdownTools.handleLocalImage}
       />
 
@@ -417,7 +462,7 @@ export default function Home() {
         setAiApiKey={aiSettings.setAiApiKey}
         aiModel={aiSettings.aiModel}
         setAiModel={aiSettings.setAiModel}
-        onClose={() => aiSettings.setShowAiConfigModal(false)}
+        onClose={handleCloseAi}
         onSave={aiSettings.saveAiSettings}
         onClear={aiSettings.clearAiSettings}
       />
@@ -430,11 +475,11 @@ export default function Home() {
         className="hidden"
       />
 
-      <RewardModal open={showReward} onClose={() => setShowReward(false)} />
+      <RewardModal open={showReward} onClose={handleCloseReward} />
 
       <TemplateImporter
         open={showTemplateImporter}
-        onClose={() => setShowTemplateImporter(false)}
+        onClose={handleCloseImporter}
         onTemplateExtracted={handleTemplateExtracted}
       />
 
@@ -442,21 +487,21 @@ export default function Home() {
         <TemplateEditor
           template={editTemplate}
           open
-          onClose={() => setEditTemplate(null)}
+          onClose={handleCloseTemplateEditor}
           onSave={handleEditTemplate}
-          onDelete={() => handleDeleteTemplate(editTemplate)}
+          onDelete={handleDeleteCurrentTemplate}
         />
       )}
 
       <WeChatPublishModal
         open={showWeChatModal}
-        onClose={() => setShowWeChatModal(false)}
+        onClose={handleCloseWeChat}
         credentials={weChatSettings.credentials}
         onSave={weChatSettings.saveCredentials}
         onClear={weChatSettings.clearCredentials}
         content={outputHtml}
         defaultTitle={extractDefaultTitle()}
-        onResult={(msg, type) => showToast(msg, type)}
+        onResult={handleWeChatResult}
       />
 
       <AppHeader
@@ -466,13 +511,11 @@ export default function Home() {
         hasContent={Boolean(inputText.trim())}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onOpenTemplateImporter={() => setShowTemplateImporter(true)}
-        onPublish={() => setShowWeChatModal(true)}
+        onOpenTemplateImporter={handleOpenImporter}
+        onPublish={handlePublish}
         previewMode={previewMode}
         hasPastedHtml={!!pastedHtml}
-        onTogglePreviewMode={() => {
-          setPreviewMode((prev) => (prev === "original" ? "template" : "original"));
-        }}
+        onTogglePreviewMode={handleTogglePreview}
       />
 
       <div className="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 overflow-hidden">
@@ -493,13 +536,13 @@ export default function Home() {
             insertImage={markdownTools.insertImage}
             onAiFormat={handleAiFormat}
             isAiFormatting={isAiFormatting}
-            onOpenAiConfig={() => aiSettings.setShowAiConfigModal(true)}
-            onRestoreSample={() => setInputText(sampleText)}
+            onOpenAiConfig={handleOpenAi}
+            onRestoreSample={handleRestoreSample}
             formatTweaks={formatTweaks}
             setFormatTweaks={setFormatTweaks}
             onUndo={handleUndo}
             onRedo={handleRedo}
-            onClear={() => setInputText("")}
+            onClear={handleClearInput}
           />
 
           <PreviewPane
@@ -519,12 +562,12 @@ export default function Home() {
             setCurrentTemplateId={setCurrentTemplateId}
             formatTweaks={formatTweaks}
             setFormatTweaks={setFormatTweaks}
-            onResetFormatTweaks={() => setFormatTweaks(DEFAULT_FORMAT_TWEAKS)}
+            onResetFormatTweaks={handleResetTweaks}
             syncScroll={syncScroll}
             setSyncScroll={setSyncScroll}
-            onOpenTemplateImporter={() => setShowTemplateImporter(true)}
+            onOpenTemplateImporter={handleOpenImporter}
             userTemplates={userTemplates}
-            onEditTemplate={(t) => setEditTemplate(t)}
+            onEditTemplate={handleEditTemplateInstance}
           />
         </div>
       </div>
