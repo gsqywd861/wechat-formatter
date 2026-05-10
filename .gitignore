@@ -3,4 +3,4 @@ node_modules
 .open-next
 .wrangler
 .DS_Store
-_worker.js
+# _worker.js 是自定义 Pages Functions 入口，需提交到 git
