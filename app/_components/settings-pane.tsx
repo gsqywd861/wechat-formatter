@@ -911,261 +911,337 @@ export function SettingsPane({
       <div
         className={`neo-panel overflow-hidden flex flex-col shrink-0 ${isTweaksOpen ? "flex-1 min-h-0" : ""}`}
       >
-        <div className="relative shrink-0 border-b border-(--neo-line) bg-(--neo-surface)">
-          <button
-            type="button"
-            className="flex w-full items-center justify-between gap-2 p-4 text-left"
-            onClick={() => setIsTweaksOpen((current) => !current)}
-          >
-            <span className="flex min-w-0 flex-1 items-center gap-2">
-              <SlidersHorizontal className="w-4 h-4 shrink-0 text-(--neo-ink)" />
-              <span className="text-[14px] font-semibold text-(--neo-ink) uppercase">
-                细节微调
+        <button
+          type="button"
+          onClick={() => setIsTweaksOpen((current) => !current)}
+          className="p-4 bg-(--neo-template-header) border-b border-(--neo-line) shrink-0 flex items-center justify-between text-left w-full"
+        >
+          <h2 className="text-[15px] font-semibold text-(--neo-on-header) flex items-center gap-2 uppercase">
+            <SlidersHorizontal className="w-4 h-4" />
+            细节微调
+          </h2>
+          <div className="flex items-center gap-2">
+            {isTweaksOpen && (
+              <span
+                role="button"
+                tabIndex={0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onResetFormatTweaks();
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.stopPropagation();
+                    onResetFormatTweaks();
+                  }
+                }}
+                className="neo-button neo-button-ghost px-2 py-1 text-xs font-semibold flex items-center gap-1 cursor-pointer select-none"
+                title="重置微调"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                重置
               </span>
-            </span>
+            )}
             <ChevronDown
-              className={`w-4 h-4 text-(--neo-ink) transition-transform ${
+              className={`w-4 h-4 text-(--neo-on-header) transition-transform ${
                 isTweaksOpen ? "rotate-180" : ""
               }`}
               strokeWidth={3}
             />
-          </button>
-          {isTweaksOpen && (
-            <button
-              type="button"
-              onClick={onResetFormatTweaks}
-              className="neo-toolbar-button absolute top-1/2 right-10 -translate-y-1/2 p-1.5"
-              title="重置微调"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-          )}
-        </div>
+          </div>
+        </button>
 
         {isTweaksOpen && (
-          <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
-            <div className="space-y-4">
-              <RangeControl
-                label="正文字号"
-                value={formatTweaks.fontSize}
-                min={14}
-                max={20}
-                step={1}
-                unit="px"
-                tone="yellow"
-                onChange={(value) => updateFormatTweaks("fontSize", value)}
-              />
-
-              <RangeControl
-                label="行高间距"
-                value={formatTweaks.lineHeight}
-                min={1.5}
-                max={2.2}
-                step={0.1}
-                tone="cyan"
-                onChange={(value) => updateFormatTweaks("lineHeight", value)}
-              />
-
-              <RangeControl
-                label="段落间距"
-                value={formatTweaks.paragraphSpacing}
-                min={8}
-                max={28}
-                step={1}
-                unit="px"
-                tone="yellow"
-                onChange={(value) => updateFormatTweaks("paragraphSpacing", value)}
-              />
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-semibold text-(--neo-ink)">首行缩进</div>
-                  <p className="text-[11px] neo-text-muted font-bold">开启后正文段落缩进 2em</p>
+          <div className="p-3 overflow-y-auto flex-1 custom-scrollbar bg-(--neo-surface)">
+            <div className="space-y-3">
+              {/* ── 文字排版 ── */}
+              <div className="border border-(--neo-line) bg-(--neo-surface)">
+                <div className="flex items-center gap-2 px-2.5 pt-2.5 pb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-(--neo-muted)">
+                    文字排版
+                  </span>
+                  <div className="flex-1 h-px bg-(--neo-line)" />
                 </div>
-                <button
-                  onClick={() =>
-                    updateFormatTweaks("firstLineIndent", !formatTweaks.firstLineIndent)
-                  }
-                  className={`relative inline-flex h-7 w-12 items-center border border-(--neo-line) transition-colors duration-200 focus:outline-none ${
-                    formatTweaks.firstLineIndent
-                      ? "bg-(--neo-green)"
-                      : "bg-(--neo-surface)"
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-4 w-4 transform bg-(--neo-ink) transition-transform duration-200 ${
-                      formatTweaks.firstLineIndent ? "translate-x-6" : "translate-x-1"
-                    }`}
+                <div className="px-2.5 pb-2.5 space-y-2.5">
+                  <RangeControl
+                    label="正文字号"
+                    value={formatTweaks.fontSize}
+                    min={14}
+                    max={20}
+                    step={1}
+                    unit="px"
+                    tone="yellow"
+                    onChange={(value) => updateFormatTweaks("fontSize", value)}
                   />
-                </button>
+                  <RangeControl
+                    label="行高间距"
+                    value={formatTweaks.lineHeight}
+                    min={1.5}
+                    max={2.2}
+                    step={0.1}
+                    tone="cyan"
+                    onChange={(value) => updateFormatTweaks("lineHeight", value)}
+                  />
+                  <RangeControl
+                    label="段落间距"
+                    value={formatTweaks.paragraphSpacing}
+                    min={8}
+                    max={28}
+                    step={1}
+                    unit="px"
+                    tone="yellow"
+                    onChange={(value) => updateFormatTweaks("paragraphSpacing", value)}
+                  />
+                  <RangeControl
+                    label="字间距"
+                    value={formatTweaks.letterSpacing}
+                    min={0}
+                    max={2}
+                    step={0.1}
+                    unit="px"
+                    tone="yellow"
+                    onChange={(value) => updateFormatTweaks("letterSpacing", value)}
+                    formatValue={(value) => `${value.toFixed(1)}px`}
+                  />
+                  <div className="flex items-center justify-between pt-2 border-t border-(--neo-line)">
+                    <div>
+                      <div className="text-xs font-semibold text-(--neo-ink)">首行缩进</div>
+                      <p className="text-[10px] neo-text-muted font-bold">正文段落缩进 2em</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[9px] font-bold ${formatTweaks.firstLineIndent ? "text-(--neo-green)" : "text-(--neo-muted)"}`}>
+                        {formatTweaks.firstLineIndent ? "已开启" : "已关闭"}
+                      </span>
+                      <button
+                        onClick={() =>
+                          updateFormatTweaks("firstLineIndent", !formatTweaks.firstLineIndent)
+                        }
+                        className={`relative inline-flex h-6 w-10 items-center border border-(--neo-line) transition-colors duration-200 focus:outline-none ${
+                          formatTweaks.firstLineIndent
+                            ? "bg-(--neo-green)"
+                            : "bg-(--neo-surface)"
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-3.5 w-3.5 transform bg-(--neo-ink) transition-transform duration-200 ${
+                            formatTweaks.firstLineIndent ? "translate-x-5" : "translate-x-1"
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="border border-(--neo-line) bg-(--neo-surface) p-3 space-y-3">
-                <div className="text-xs font-semibold text-(--neo-ink)">页面留白</div>
-                <RangeControl
-                  label="上留白"
-                  value={formatTweaks.pagePaddingTop}
-                  min={0}
-                  max={48}
-                  step={1}
-                  unit="px"
-                  tone="cyan"
-                  onChange={(value) => updateFormatTweaks("pagePaddingTop", value)}
-                />
-                <RangeControl
-                  label="右留白"
-                  value={formatTweaks.pagePaddingRight}
-                  min={0}
-                  max={48}
-                  step={1}
-                  unit="px"
-                  tone="yellow"
-                  onChange={(value) => updateFormatTweaks("pagePaddingRight", value)}
-                />
-                <RangeControl
-                  label="下留白"
-                  value={formatTweaks.pagePaddingBottom}
-                  min={0}
-                  max={48}
-                  step={1}
-                  unit="px"
-                  tone="cyan"
-                  onChange={(value) => updateFormatTweaks("pagePaddingBottom", value)}
-                />
-                <RangeControl
-                  label="左留白"
-                  value={formatTweaks.pagePaddingLeft}
-                  min={0}
-                  max={48}
-                  step={1}
-                  unit="px"
-                  tone="yellow"
-                  onChange={(value) => updateFormatTweaks("pagePaddingLeft", value)}
-                />
+              {/* ── 页面布局 ── */}
+              <div className="border border-(--neo-line) bg-(--neo-surface)">
+                <div className="flex items-center gap-2 px-2.5 pt-2.5 pb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-(--neo-muted)">
+                    页面布局
+                  </span>
+                  <div className="flex-1 h-px bg-(--neo-line)" />
+                </div>
+                <div className="px-2.5 pb-2.5 space-y-2.5">
+                  <RangeControl
+                    label="上留白"
+                    value={formatTweaks.pagePaddingTop}
+                    min={0}
+                    max={48}
+                    step={1}
+                    unit="px"
+                    tone="cyan"
+                    onChange={(value) => updateFormatTweaks("pagePaddingTop", value)}
+                  />
+                  <RangeControl
+                    label="下留白"
+                    value={formatTweaks.pagePaddingBottom}
+                    min={0}
+                    max={48}
+                    step={1}
+                    unit="px"
+                    tone="cyan"
+                    onChange={(value) => updateFormatTweaks("pagePaddingBottom", value)}
+                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <RangeControl
+                      label="左留白"
+                      value={formatTweaks.pagePaddingLeft}
+                      min={0}
+                      max={48}
+                      step={1}
+                      unit="px"
+                      tone="yellow"
+                      onChange={(value) => updateFormatTweaks("pagePaddingLeft", value)}
+                    />
+                    <RangeControl
+                      label="右留白"
+                      value={formatTweaks.pagePaddingRight}
+                      min={0}
+                      max={48}
+                      step={1}
+                      unit="px"
+                      tone="yellow"
+                      onChange={(value) => updateFormatTweaks("pagePaddingRight", value)}
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* ── 元素级样式 ── */}
-              <ElementStyleSection
-                label="H1 样式"
-                bgColor={formatTweaks.h1BackgroundColor}
-                onBgColor={(v) => updateFormatTweaks("h1BackgroundColor", v)}
-                borderColor={formatTweaks.h1BorderColor}
-                onBorderColor={(v) => updateFormatTweaks("h1BorderColor", v)}
-                borderStyle={formatTweaks.h1BorderStyle}
-                onBorderStyle={(v) => updateFormatTweaks("h1BorderStyle", v)}
-                borderRadius={formatTweaks.h1BorderRadius}
-                onBorderRadius={(v) => updateFormatTweaks("h1BorderRadius", v)}
-              />
+              <div className="border border-(--neo-line) bg-(--neo-surface)">
+                <div className="flex items-center gap-2 px-2.5 pt-2.5 pb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-(--neo-muted)">
+                    元素样式
+                  </span>
+                  <div className="flex-1 h-px bg-(--neo-line)" />
+                </div>
+                <div className="px-2.5 pb-2.5 space-y-2">
+                  <ElementStyleSection
+                    label="H1 样式"
+                    bgColor={formatTweaks.h1BackgroundColor}
+                    onBgColor={(v) => updateFormatTweaks("h1BackgroundColor", v)}
+                    borderColor={formatTweaks.h1BorderColor}
+                    onBorderColor={(v) => updateFormatTweaks("h1BorderColor", v)}
+                    borderStyle={formatTweaks.h1BorderStyle}
+                    onBorderStyle={(v) => updateFormatTweaks("h1BorderStyle", v)}
+                    borderRadius={formatTweaks.h1BorderRadius}
+                    onBorderRadius={(v) => updateFormatTweaks("h1BorderRadius", v)}
+                  />
+                  <ElementStyleSection
+                    label="H2 样式"
+                    bgColor={formatTweaks.h2BackgroundColor}
+                    onBgColor={(v) => updateFormatTweaks("h2BackgroundColor", v)}
+                    borderColor={formatTweaks.h2BorderColor}
+                    onBorderColor={(v) => updateFormatTweaks("h2BorderColor", v)}
+                    borderStyle={formatTweaks.h2BorderStyle}
+                    onBorderStyle={(v) => updateFormatTweaks("h2BorderStyle", v)}
+                    borderRadius={formatTweaks.h2BorderRadius}
+                    onBorderRadius={(v) => updateFormatTweaks("h2BorderRadius", v)}
+                  />
+                  <ElementStyleSection
+                    label="正文样式"
+                    bgColor={formatTweaks.paragraphBackgroundColor}
+                    onBgColor={(v) => updateFormatTweaks("paragraphBackgroundColor", v)}
+                    borderColor={formatTweaks.paragraphBorderColor}
+                    onBorderColor={(v) => updateFormatTweaks("paragraphBorderColor", v)}
+                    borderStyle={formatTweaks.paragraphBorderStyle}
+                    onBorderStyle={(v) => updateFormatTweaks("paragraphBorderStyle", v)}
+                    borderRadius={formatTweaks.paragraphBorderRadius}
+                    onBorderRadius={(v) => updateFormatTweaks("paragraphBorderRadius", v)}
+                  />
+                  <ElementStyleSection
+                    label="引用样式"
+                    bgColor={formatTweaks.blockquoteBackgroundColor}
+                    onBgColor={(v) => updateFormatTweaks("blockquoteBackgroundColor", v)}
+                    borderColor={formatTweaks.blockquoteBorderColor}
+                    onBorderColor={(v) => updateFormatTweaks("blockquoteBorderColor", v)}
+                    borderStyle={formatTweaks.blockquoteBorderStyle}
+                    onBorderStyle={(v) => updateFormatTweaks("blockquoteBorderStyle", v)}
+                    borderRadius={formatTweaks.blockquoteBorderRadius}
+                    onBorderRadius={(v) => updateFormatTweaks("blockquoteBorderRadius", v)}
+                  />
+                </div>
+              </div>
 
-              <ElementStyleSection
-                label="H2 样式"
-                bgColor={formatTweaks.h2BackgroundColor}
-                onBgColor={(v) => updateFormatTweaks("h2BackgroundColor", v)}
-                borderColor={formatTweaks.h2BorderColor}
-                onBorderColor={(v) => updateFormatTweaks("h2BorderColor", v)}
-                borderStyle={formatTweaks.h2BorderStyle}
-                onBorderStyle={(v) => updateFormatTweaks("h2BorderStyle", v)}
-                borderRadius={formatTweaks.h2BorderRadius}
-                onBorderRadius={(v) => updateFormatTweaks("h2BorderRadius", v)}
-              />
+              {/* ── 自定义 CSS ── */}
+              <div className="border border-(--neo-line) bg-(--neo-surface)">
+                <div className="flex items-center gap-2 px-2.5 pt-2.5 pb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-(--neo-muted)">
+                    自定义 CSS
+                  </span>
+                  <div className="flex-1 h-px bg-(--neo-line)" />
+                </div>
+                <div className="px-2.5 pb-2.5 space-y-2">
+                  <CustomCssBlock
+                    label="H1"
+                    presetKey="h1"
+                    value={formatTweaks.h1CustomCss}
+                    onChange={(v) => updateFormatTweaks("h1CustomCss", v)}
+                  />
+                  <CustomCssBlock
+                    label="H2"
+                    presetKey="h2"
+                    value={formatTweaks.h2CustomCss}
+                    onChange={(v) => updateFormatTweaks("h2CustomCss", v)}
+                  />
+                  <CustomCssBlock
+                    label="正文"
+                    presetKey="paragraph"
+                    value={formatTweaks.paragraphCustomCss}
+                    onChange={(v) => updateFormatTweaks("paragraphCustomCss", v)}
+                  />
+                  <CustomCssBlock
+                    label="引用"
+                    presetKey="blockquote"
+                    value={formatTweaks.blockquoteCustomCss}
+                    onChange={(v) => updateFormatTweaks("blockquoteCustomCss", v)}
+                  />
+                </div>
+              </div>
 
-              <ElementStyleSection
-                label="正文样式"
-                bgColor={formatTweaks.paragraphBackgroundColor}
-                onBgColor={(v) => updateFormatTweaks("paragraphBackgroundColor", v)}
-                borderColor={formatTweaks.paragraphBorderColor}
-                onBorderColor={(v) => updateFormatTweaks("paragraphBorderColor", v)}
-                borderStyle={formatTweaks.paragraphBorderStyle}
-                onBorderStyle={(v) => updateFormatTweaks("paragraphBorderStyle", v)}
-                borderRadius={formatTweaks.paragraphBorderRadius}
-                onBorderRadius={(v) => updateFormatTweaks("paragraphBorderRadius", v)}
-              />
-
-              <ElementStyleSection
-                label="引用样式"
-                bgColor={formatTweaks.blockquoteBackgroundColor}
-                onBgColor={(v) => updateFormatTweaks("blockquoteBackgroundColor", v)}
-                borderColor={formatTweaks.blockquoteBorderColor}
-                onBorderColor={(v) => updateFormatTweaks("blockquoteBorderColor", v)}
-                borderStyle={formatTweaks.blockquoteBorderStyle}
-                onBorderStyle={(v) => updateFormatTweaks("blockquoteBorderStyle", v)}
-                borderRadius={formatTweaks.blockquoteBorderRadius}
-                onBorderRadius={(v) => updateFormatTweaks("blockquoteBorderRadius", v)}
-              />
-
-              {/* 自定义 CSS 区块 */}
-              <CustomCssBlock
-                label="H1 自定义 CSS"
-                presetKey="h1"
-                value={formatTweaks.h1CustomCss}
-                onChange={(v) => updateFormatTweaks("h1CustomCss", v)}
-              />
-              <CustomCssBlock
-                label="H2 自定义 CSS"
-                presetKey="h2"
-                value={formatTweaks.h2CustomCss}
-                onChange={(v) => updateFormatTweaks("h2CustomCss", v)}
-              />
-              <CustomCssBlock
-                label="正文自定义 CSS"
-                presetKey="paragraph"
-                value={formatTweaks.paragraphCustomCss}
-                onChange={(v) => updateFormatTweaks("paragraphCustomCss", v)}
-              />
-              <CustomCssBlock
-                label="引用自定义 CSS"
-                presetKey="blockquote"
-                value={formatTweaks.blockquoteCustomCss}
-                onChange={(v) => updateFormatTweaks("blockquoteCustomCss", v)}
-              />
-
-              <RangeControl
-                label="字间距"
-                value={formatTweaks.letterSpacing}
-                min={0}
-                max={2}
-                step={0.1}
-                unit="px"
-                tone="yellow"
-                onChange={(value) => updateFormatTweaks("letterSpacing", value)}
-                formatValue={(value) => `${value.toFixed(1)}px`}
-              />
-
-              <RangeControl
-                label="图片圆角"
-                value={formatTweaks.imageRadius}
-                min={0}
-                max={20}
-                step={1}
-                unit="px"
-                tone="cyan"
-                onChange={(value) => updateFormatTweaks("imageRadius", value)}
-              />
+              {/* ── 图片 ── */}
+              <div className="border border-(--neo-line) bg-(--neo-surface)">
+                <div className="flex items-center gap-2 px-2.5 pt-2.5 pb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-(--neo-muted)">
+                    图片
+                  </span>
+                  <div className="flex-1 h-px bg-(--neo-line)" />
+                </div>
+                <div className="px-2.5 pb-2.5">
+                  <RangeControl
+                    label="图片圆角"
+                    value={formatTweaks.imageRadius}
+                    min={0}
+                    max={20}
+                    step={1}
+                    unit="px"
+                    tone="cyan"
+                    onChange={(value) => updateFormatTweaks("imageRadius", value)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         )}
       </div>
 
-      <div className="hidden md:block neo-panel p-4 shrink-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ArrowLeftRight className="w-4 h-4 text-(--neo-ink)" />
-            <span className="text-sm font-semibold text-(--neo-ink)">滚动同步</span>
+      <div className="hidden md:block neo-panel overflow-hidden shrink-0">
+        <div className="px-4 py-3 bg-(--neo-template-header) border-b border-(--neo-line)">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <ArrowLeftRight className="w-4 h-4 text-(--neo-on-header)" />
+              <span className="text-[14px] font-semibold text-(--neo-on-header)">滚动同步</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`text-[10px] font-bold ${syncScroll ? "text-(--neo-green)" : "text-(--neo-muted)"}`}>
+                {syncScroll ? "已开启" : "已关闭"}
+              </span>
+              <button
+                onClick={() => setSyncScroll(!syncScroll)}
+                className={`relative inline-flex h-6 w-10 items-center border border-(--neo-line) transition-all duration-200 focus:outline-none ${
+                  syncScroll ? "bg-(--neo-green)" : "bg-(--neo-surface)"
+                }`}
+              >
+                <span
+                  className={`inline-block h-3.5 w-3.5 transform bg-(--neo-ink) transition-all duration-200 ${
+                    syncScroll ? "translate-x-5" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
           </div>
-          <button
-            onClick={() => setSyncScroll(!syncScroll)}
-            className={`relative inline-flex h-7 w-12 items-center border border-(--neo-line) transition-colors duration-200 focus:outline-none ${
-              syncScroll ? "bg-(--neo-green)" : "bg-(--neo-surface)"
-            }`}
-          >
-            <span
-              className={`inline-block h-4 w-4 transform bg-(--neo-ink) transition-transform duration-200 ${
-                syncScroll ? "translate-x-6" : "translate-x-1"
-              }`}
-            />
-          </button>
         </div>
-        <p className="text-xs neo-text-muted mt-2 font-bold">开启后，编辑区与预览区将同步滚动</p>
+        <div className="px-4 py-2.5 bg-(--neo-surface)">
+          <div className="flex items-center gap-2">
+            <span className={`inline-block w-1.5 h-1.5 rounded-full ${syncScroll ? "bg-(--neo-green)" : "bg-(--neo-muted)"}`} />
+            <p className="text-xs neo-text-muted font-bold">
+              开启后，编辑区与预览区将同步滚动
+              {syncScroll && (
+                <span className="text-(--neo-green) ml-1">✓ 已同步</span>
+              )}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
