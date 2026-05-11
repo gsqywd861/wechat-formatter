@@ -25,9 +25,7 @@ jobs:
       - name: Build
         run: npm run cf:build
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: f7b557e9d4336308f80599c462c783a3
-          command: pages deploy .open-next --project-name wechat-formatter --branch main
+      - name: Deploy
+        run: npx wrangler pages deploy .open-next --project-name wechat-formatter --branch main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
