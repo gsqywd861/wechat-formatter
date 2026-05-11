@@ -18,13 +18,21 @@ export type CloudUserConfig = {
   ai?: CloudAiConfig;
 };
 
+const FETCH_TIMEOUT_MS = 5_000;
+
+function fetchWithTimeout(url: string, options: RequestInit = {}): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
 /** 保存配置到云端（按需传输 wechat / ai 子集） */
 export async function saveConfigToCloud(
   deviceId: string,
   partial: CloudUserConfig,
 ): Promise<{ success: boolean; message: string }> {
   try {
-    const res = await fetch("/api/config", {
+    const res = await fetchWithTimeout("/api/config", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ deviceId, ...partial }),
@@ -44,7 +52,7 @@ export async function loadConfigFromCloud(
   deviceId: string,
 ): Promise<{ config: CloudUserConfig | null; message: string }> {
   try {
-    const res = await fetch(`/api/config?deviceId=${encodeURIComponent(deviceId)}`);
+    const res = await fetchWithTimeout(`/api/config?deviceId=${encodeURIComponent(deviceId)}`);
     const data = await res.json() as {
       config?: CloudUserConfig | null;
       message?: string;
@@ -62,7 +70,7 @@ export async function loadConfigFromCloud(
 /** 清除云端配置 */
 export async function clearConfigFromCloud(deviceId: string): Promise<boolean> {
   try {
-    const res = await fetch(`/api/config?deviceId=${encodeURIComponent(deviceId)}`, {
+    const res = await fetchWithTimeout(`/api/config?deviceId=${encodeURIComponent(deviceId)}`, {
       method: "DELETE",
     });
     const data = await res.json() as { success?: boolean };
