@@ -1,5 +1,6 @@
 import {
   Code2,
+  ClipboardPaste,
   FileText,
   Image as ImageIcon,
   Link as LinkIcon,
@@ -15,7 +16,7 @@ import {
   Trash2,
   Undo2,
 } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import type { ActiveTab, FormatTweaks, WordCount } from "../_types/formatter";
 
 type MarkdownEditorPaneProps = {
@@ -39,6 +40,7 @@ type MarkdownEditorPaneProps = {
   onUndo: () => void;
   onRedo: () => void;
   onClear: () => void;
+  onPasteFromClipboard?: () => void;
   formatTweaks: FormatTweaks;
   setFormatTweaks: React.Dispatch<React.SetStateAction<FormatTweaks>>;
 };
@@ -88,7 +90,51 @@ export function MarkdownEditorPane({
   onUndo,
   onRedo,
   onClear,
+  onPasteFromClipboard,
 }: MarkdownEditorPaneProps) {
+  // 剪贴板状态监控
+  const [hasClipboardContent, setHasClipboardContent] = useState(false);
+  const clipboardCheckRef = useRef<number | null>(null);
+
+  // 定期检查剪贴板内容
+  useEffect(() => {
+    const checkClipboard = async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        setHasClipboardContent(text.length > 0);
+      } catch {
+        // 剪贴板 API 可能不可用（权限问题或非 HTTPS）
+        setHasClipboardContent(false);
+      }
+    };
+
+    // 初始检查
+    checkClipboard();
+    
+    // 每秒检查一次剪贴板
+    clipboardCheckRef.current = window.setInterval(checkClipboard, 1000);
+
+    return () => {
+      if (clipboardCheckRef.current) {
+        clearInterval(clipboardCheckRef.current);
+      }
+    };
+  }, []);
+
+  // 一键粘贴处理
+  const handlePasteFromClipboard = useCallback(async () => {
+    if (!onPasteFromClipboard) return;
+    
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        onPasteFromClipboard();
+      }
+    } catch (error) {
+      console.error("读取剪贴板失败:", error);
+    }
+  }, [onPasteFromClipboard]);
+
   // 键盘快捷键：Cmd+Z 撤销，Cmd+Shift+Z 重做
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -166,6 +212,9 @@ export function MarkdownEditorPane({
         <button onClick={() => insertHeading(1)} className="neo-toolbar-button p-1.5 text-sm font-bold" title="一级标题">H1</button>
         <button onClick={() => insertHeading(2)} className="neo-toolbar-button p-1.5 text-sm font-bold" title="二级标题">H2</button>
         <button onClick={() => insertHeading(3)} className="neo-toolbar-button p-1.5 text-sm font-bold" title="三级标题">H3</button>
+        <button onClick={() => insertHeading(4)} className="neo-toolbar-button p-1.5 text-xs font-bold" title="四级标题">H4</button>
+        <button onClick={() => insertHeading(5)} className="neo-toolbar-button p-1.5 text-xs font-bold" title="五级标题">H5</button>
+        <button onClick={() => insertHeading(6)} className="neo-toolbar-button p-1.5 text-xs font-bold" title="六级标题">H6</button>
         <button onClick={() => insertMarkdown("**", "**", "加粗")} className="neo-toolbar-button p-1.5 font-bold text-sm" title="加粗 (Ctrl+B)">
           <span className="text-[13px]">B</span>
         </button>
@@ -215,6 +264,21 @@ export function MarkdownEditorPane({
         <button onClick={onClear} className="neo-toolbar-button p-1.5" title="清空编辑器">
           <Trash2 className="w-4 h-4" />
         </button>
+        
+        {/* 一键粘贴按钮 */}
+        {onPasteFromClipboard && (
+          <>
+            <div className="w-[3px] h-6 bg-(--neo-ink) mx-1" />
+            <button 
+              onClick={handlePasteFromClipboard} 
+              className={`neo-toolbar-button p-1.5 ${hasClipboardContent ? 'neo-button-primary' : ''}`}
+              title={hasClipboardContent ? "一键粘贴剪贴板内容" : "剪贴板为空"}
+              disabled={!hasClipboardContent}
+            >
+              <ClipboardPaste className="w-4 h-4" />
+            </button>
+          </>
+        )}
       </div>
 
       {/* 快速调色栏 */}

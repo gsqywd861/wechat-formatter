@@ -138,8 +138,11 @@ export function TemplateEditor({
           {onDelete && (
             <button
               onClick={() => {
-                onDelete();
-                onClose();
+                // 添加确认对话框，防止误删
+                if (window.confirm("确定要删除这个模板吗？此操作不可撤销。")) {
+                  onDelete();
+                  onClose();
+                }
               }}
               className="neo-button px-4 py-2 text-xs font-semibold border-2 border-(--neo-red) text-(--neo-red) hover:bg-(--neo-red)/10"
             >

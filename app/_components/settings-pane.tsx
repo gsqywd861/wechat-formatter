@@ -12,6 +12,7 @@ import { useCallback, useMemo, useState } from "react";
 import type React from "react";
 import type { ActiveTab, FormatTweaks } from "../_types/formatter";
 import type { TemplateConfig } from "../template-engine";
+import { AdvancedElementControls } from "./advanced-element-controls";
 
 /** 从模板配置中提取预览样式 */
 function usePreviewStyle(template: TemplateConfig) {
@@ -78,10 +79,11 @@ type TemplateCardProps = {
   isSelected: boolean;
   onSelect: () => void;
   onEdit?: (template: TemplateConfig) => void;
+  onDelete?: (template: TemplateConfig) => void;
 };
 
 /** 带迷你预览缩略图的模板卡片 */
-function TemplateCard({ template, isSelected, onSelect, onEdit }: TemplateCardProps) {
+function TemplateCard({ template, isSelected, onSelect, onEdit, onDelete }: TemplateCardProps) {
   const pv = usePreviewStyle(template);
 
   return (
@@ -141,32 +143,60 @@ function TemplateCard({ template, isSelected, onSelect, onEdit }: TemplateCardPr
         </div>
       )}
 
-      {/* 用户模板编辑按钮 */}
-      {template.id.startsWith("user-") && onEdit && (
-        <span
-          role="button"
-          tabIndex={0}
-          onClick={(e) => {
-            e.stopPropagation();
-            onEdit(template);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.stopPropagation();
-              onEdit(template);
-            }
-          }}
-          className="absolute bottom-1 left-1 bg-(--neo-cyan) text-[#111] border border-(--neo-line) p-0.5 hover:bg-(--neo-yellow) text-[9px] font-semibold leading-none cursor-pointer select-none"
-          title="编辑模板"
-        >
-          编辑
-        </span>
+      {/* 用户模板编辑和删除按钮 */}
+      {template.id.startsWith("user-") && (onEdit || onDelete) && (
+        <div className="absolute bottom-1 left-1 flex gap-0.5">
+          {onEdit && (
+            <span
+              role="button"
+              tabIndex={0}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(template);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.stopPropagation();
+                  onEdit(template);
+                }
+              }}
+              className="bg-(--neo-cyan) text-[#111] border border-(--neo-line) p-0.5 hover:bg-(--neo-yellow) text-[9px] font-semibold leading-none cursor-pointer select-none"
+              title="编辑模板"
+            >
+              编辑
+            </span>
+          )}
+          {onDelete && (
+            <span
+              role="button"
+              tabIndex={0}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (window.confirm(`确定要删除模板"${template.name}"吗？此操作不可撤销。`)) {
+                  onDelete(template);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.stopPropagation();
+                  if (window.confirm(`确定要删除模板"${template.name}"吗？此操作不可撤销。`)) {
+                    onDelete(template);
+                  }
+                }
+              }}
+              className="bg-(--neo-red) text-white border border-(--neo-line) p-0.5 hover:bg-red-700 text-[9px] font-semibold leading-none cursor-pointer select-none"
+              title="删除模板"
+            >
+              删除
+            </span>
+          )}
+        </div>
       )}
     </button>
   );
 }
 
-/** 元素级样式编辑区块 — 背景色/边框色/边框样式/圆角 */
+/** 元素级样式编辑区块 — 背景色/边框色/边框样式/圆角/边框宽度/内边距/外边距/文字阴影/盒子阴影/透明度/变换/过渡/动画/滤镜/混合模式 */
 type ElementStyleSectionProps = {
   label: string;
   bgColor?: string;
@@ -175,8 +205,30 @@ type ElementStyleSectionProps = {
   onBorderColor: (v: string | undefined) => void;
   borderStyle?: string;
   onBorderStyle: (v: string | undefined) => void;
+  borderWidth?: number;
+  onBorderWidth: (v: number | undefined) => void;
   borderRadius?: number;
   onBorderRadius: (v: number | undefined) => void;
+  padding?: number;
+  onPadding: (v: number | undefined) => void;
+  margin?: number;
+  onMargin: (v: number | undefined) => void;
+  textShadow?: string;
+  onTextShadow: (v: string | undefined) => void;
+  boxShadow?: string;
+  onBoxShadow: (v: string | undefined) => void;
+  opacity?: number;
+  onOpacity: (v: number | undefined) => void;
+  transform?: string;
+  onTransform: (v: string | undefined) => void;
+  transition?: string;
+  onTransition: (v: string | undefined) => void;
+  animation?: string;
+  onAnimation: (v: string | undefined) => void;
+  filter?: string;
+  onFilter: (v: string | undefined) => void;
+  mixBlendMode?: string;
+  onMixBlendMode: (v: string | undefined) => void;
 };
 
 function ElementStyleSection({
@@ -187,27 +239,72 @@ function ElementStyleSection({
   onBorderColor,
   borderStyle,
   onBorderStyle,
+  borderWidth,
+  onBorderWidth,
   borderRadius,
   onBorderRadius,
+  padding,
+  onPadding,
+  margin,
+  onMargin,
+  textShadow,
+  onTextShadow,
+  boxShadow,
+  onBoxShadow,
+  opacity,
+  onOpacity,
+  transform,
+  onTransform,
+  transition,
+  onTransition,
+  animation,
+  onAnimation,
+  filter,
+  onFilter,
+  mixBlendMode,
+  onMixBlendMode,
 }: ElementStyleSectionProps) {
-  const hasChanges = bgColor || borderColor || borderStyle || borderRadius !== undefined;
+  const hasChanges = bgColor || borderColor || borderStyle || borderRadius !== undefined ||
+    borderWidth !== undefined || padding !== undefined || margin !== undefined ||
+    textShadow || boxShadow || opacity !== undefined || transform || transition || animation || filter || mixBlendMode;
+  
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   return (
     <div className="border border-(--neo-line) bg-(--neo-surface) p-2.5 space-y-2">
       <div className="flex items-center justify-between">
         <span className="text-[11px] font-bold text-(--neo-ink)">{label}</span>
-        {hasChanges && (
+        <div className="flex items-center gap-2">
+          {hasChanges && (
+            <button
+              onClick={() => {
+                onBgColor(undefined);
+                onBorderColor(undefined);
+                onBorderStyle(undefined);
+                onBorderRadius(undefined);
+                onBorderWidth(undefined);
+                onPadding(undefined);
+                onMargin(undefined);
+                onTextShadow(undefined);
+                onBoxShadow(undefined);
+                onOpacity(undefined);
+                onTransform(undefined);
+                onTransition(undefined);
+                onAnimation(undefined);
+                onFilter(undefined);
+                onMixBlendMode(undefined);
+              }}
+              className="text-[9px] font-semibold underline text-(--neo-muted) hover:text-(--neo-ink)"
+            >
+              重置
+            </button>
+          )}
           <button
-            onClick={() => {
-              onBgColor(undefined);
-              onBorderColor(undefined);
-              onBorderStyle(undefined);
-              onBorderRadius(undefined);
-            }}
-            className="text-[9px] font-semibold underline text-(--neo-muted) hover:text-(--neo-ink)"
+            onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+            className="text-[9px] font-semibold text-(--neo-accent) hover:underline"
           >
-            重置
+            {isAdvancedOpen ? "收起" : "高级"}
           </button>
-        )}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-2">
@@ -713,6 +810,7 @@ type SettingsPaneProps = {
   onOpenTemplateImporter?: () => void;
   userTemplates?: TemplateConfig[];
   onEditTemplate?: (template: TemplateConfig) => void;
+  onDeleteTemplate?: (template: TemplateConfig) => void;
 };
 
 export function SettingsPane({
@@ -731,6 +829,7 @@ export function SettingsPane({
   onOpenTemplateImporter,
   userTemplates,
   onEditTemplate,
+  onDeleteTemplate,
 }: SettingsPaneProps) {
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(true);
   const [isTweaksOpen, setIsTweaksOpen] = useState(false);
@@ -828,6 +927,7 @@ export function SettingsPane({
                         updateFormatTweaks("themeColor", template.themeColor);
                       }}
                       onEdit={onEditTemplate}
+                      onDelete={onDeleteTemplate}
                     />
                   ))}
               </div>
@@ -1104,8 +1204,54 @@ export function SettingsPane({
                     onBorderColor={(v) => updateFormatTweaks("h1BorderColor", v)}
                     borderStyle={formatTweaks.h1BorderStyle}
                     onBorderStyle={(v) => updateFormatTweaks("h1BorderStyle", v)}
+                    borderWidth={formatTweaks.h1BorderWidth}
+                    onBorderWidth={(v) => updateFormatTweaks("h1BorderWidth", v)}
                     borderRadius={formatTweaks.h1BorderRadius}
                     onBorderRadius={(v) => updateFormatTweaks("h1BorderRadius", v)}
+                    padding={formatTweaks.h1Padding}
+                    onPadding={(v) => updateFormatTweaks("h1Padding", v)}
+                    margin={formatTweaks.h1Margin}
+                    onMargin={(v) => updateFormatTweaks("h1Margin", v)}
+                    textShadow={formatTweaks.h1TextShadow}
+                    onTextShadow={(v) => updateFormatTweaks("h1TextShadow", v)}
+                    boxShadow={formatTweaks.h1BoxShadow}
+                    onBoxShadow={(v) => updateFormatTweaks("h1BoxShadow", v)}
+                    opacity={formatTweaks.h1Opacity}
+                    onOpacity={(v) => updateFormatTweaks("h1Opacity", v)}
+                    transform={formatTweaks.h1Transform}
+                    onTransform={(v) => updateFormatTweaks("h1Transform", v)}
+                    transition={formatTweaks.h1Transition}
+                    onTransition={(v) => updateFormatTweaks("h1Transition", v)}
+                    animation={formatTweaks.h1Animation}
+                    onAnimation={(v) => updateFormatTweaks("h1Animation", v)}
+                    filter={formatTweaks.h1Filter}
+                    onFilter={(v) => updateFormatTweaks("h1Filter", v)}
+                    mixBlendMode={formatTweaks.h1MixBlendMode}
+                    onMixBlendMode={(v) => updateFormatTweaks("h1MixBlendMode", v)}
+                  />
+                  <AdvancedElementControls
+                    borderWidth={formatTweaks.h1BorderWidth}
+                    onBorderWidth={(v) => updateFormatTweaks("h1BorderWidth", v)}
+                    padding={formatTweaks.h1Padding}
+                    onPadding={(v) => updateFormatTweaks("h1Padding", v)}
+                    margin={formatTweaks.h1Margin}
+                    onMargin={(v) => updateFormatTweaks("h1Margin", v)}
+                    textShadow={formatTweaks.h1TextShadow}
+                    onTextShadow={(v) => updateFormatTweaks("h1TextShadow", v)}
+                    boxShadow={formatTweaks.h1BoxShadow}
+                    onBoxShadow={(v) => updateFormatTweaks("h1BoxShadow", v)}
+                    opacity={formatTweaks.h1Opacity}
+                    onOpacity={(v) => updateFormatTweaks("h1Opacity", v)}
+                    transform={formatTweaks.h1Transform}
+                    onTransform={(v) => updateFormatTweaks("h1Transform", v)}
+                    transition={formatTweaks.h1Transition}
+                    onTransition={(v) => updateFormatTweaks("h1Transition", v)}
+                    animation={formatTweaks.h1Animation}
+                    onAnimation={(v) => updateFormatTweaks("h1Animation", v)}
+                    filter={formatTweaks.h1Filter}
+                    onFilter={(v) => updateFormatTweaks("h1Filter", v)}
+                    mixBlendMode={formatTweaks.h1MixBlendMode}
+                    onMixBlendMode={(v) => updateFormatTweaks("h1MixBlendMode", v)}
                   />
                   <ElementStyleSection
                     label="H2 样式"
@@ -1115,8 +1261,54 @@ export function SettingsPane({
                     onBorderColor={(v) => updateFormatTweaks("h2BorderColor", v)}
                     borderStyle={formatTweaks.h2BorderStyle}
                     onBorderStyle={(v) => updateFormatTweaks("h2BorderStyle", v)}
+                    borderWidth={formatTweaks.h2BorderWidth}
+                    onBorderWidth={(v) => updateFormatTweaks("h2BorderWidth", v)}
                     borderRadius={formatTweaks.h2BorderRadius}
                     onBorderRadius={(v) => updateFormatTweaks("h2BorderRadius", v)}
+                    padding={formatTweaks.h2Padding}
+                    onPadding={(v) => updateFormatTweaks("h2Padding", v)}
+                    margin={formatTweaks.h2Margin}
+                    onMargin={(v) => updateFormatTweaks("h2Margin", v)}
+                    textShadow={formatTweaks.h2TextShadow}
+                    onTextShadow={(v) => updateFormatTweaks("h2TextShadow", v)}
+                    boxShadow={formatTweaks.h2BoxShadow}
+                    onBoxShadow={(v) => updateFormatTweaks("h2BoxShadow", v)}
+                    opacity={formatTweaks.h2Opacity}
+                    onOpacity={(v) => updateFormatTweaks("h2Opacity", v)}
+                    transform={formatTweaks.h2Transform}
+                    onTransform={(v) => updateFormatTweaks("h2Transform", v)}
+                    transition={formatTweaks.h2Transition}
+                    onTransition={(v) => updateFormatTweaks("h2Transition", v)}
+                    animation={formatTweaks.h2Animation}
+                    onAnimation={(v) => updateFormatTweaks("h2Animation", v)}
+                    filter={formatTweaks.h2Filter}
+                    onFilter={(v) => updateFormatTweaks("h2Filter", v)}
+                    mixBlendMode={formatTweaks.h2MixBlendMode}
+                    onMixBlendMode={(v) => updateFormatTweaks("h2MixBlendMode", v)}
+                  />
+                  <AdvancedElementControls
+                    borderWidth={formatTweaks.h2BorderWidth}
+                    onBorderWidth={(v) => updateFormatTweaks("h2BorderWidth", v)}
+                    padding={formatTweaks.h2Padding}
+                    onPadding={(v) => updateFormatTweaks("h2Padding", v)}
+                    margin={formatTweaks.h2Margin}
+                    onMargin={(v) => updateFormatTweaks("h2Margin", v)}
+                    textShadow={formatTweaks.h2TextShadow}
+                    onTextShadow={(v) => updateFormatTweaks("h2TextShadow", v)}
+                    boxShadow={formatTweaks.h2BoxShadow}
+                    onBoxShadow={(v) => updateFormatTweaks("h2BoxShadow", v)}
+                    opacity={formatTweaks.h2Opacity}
+                    onOpacity={(v) => updateFormatTweaks("h2Opacity", v)}
+                    transform={formatTweaks.h2Transform}
+                    onTransform={(v) => updateFormatTweaks("h2Transform", v)}
+                    transition={formatTweaks.h2Transition}
+                    onTransition={(v) => updateFormatTweaks("h2Transition", v)}
+                    animation={formatTweaks.h2Animation}
+                    onAnimation={(v) => updateFormatTweaks("h2Animation", v)}
+                    filter={formatTweaks.h2Filter}
+                    onFilter={(v) => updateFormatTweaks("h2Filter", v)}
+                    mixBlendMode={formatTweaks.h2MixBlendMode}
+                    onMixBlendMode={(v) => updateFormatTweaks("h2MixBlendMode", v)}
                   />
                   <ElementStyleSection
                     label="正文样式"
@@ -1126,8 +1318,30 @@ export function SettingsPane({
                     onBorderColor={(v) => updateFormatTweaks("paragraphBorderColor", v)}
                     borderStyle={formatTweaks.paragraphBorderStyle}
                     onBorderStyle={(v) => updateFormatTweaks("paragraphBorderStyle", v)}
+                    borderWidth={formatTweaks.paragraphBorderWidth}
+                    onBorderWidth={(v) => updateFormatTweaks("paragraphBorderWidth", v)}
                     borderRadius={formatTweaks.paragraphBorderRadius}
                     onBorderRadius={(v) => updateFormatTweaks("paragraphBorderRadius", v)}
+                    padding={formatTweaks.paragraphPadding}
+                    onPadding={(v) => updateFormatTweaks("paragraphPadding", v)}
+                    margin={formatTweaks.paragraphMargin}
+                    onMargin={(v) => updateFormatTweaks("paragraphMargin", v)}
+                    textShadow={formatTweaks.paragraphTextShadow}
+                    onTextShadow={(v) => updateFormatTweaks("paragraphTextShadow", v)}
+                    boxShadow={formatTweaks.paragraphBoxShadow}
+                    onBoxShadow={(v) => updateFormatTweaks("paragraphBoxShadow", v)}
+                    opacity={formatTweaks.paragraphOpacity}
+                    onOpacity={(v) => updateFormatTweaks("paragraphOpacity", v)}
+                    transform={formatTweaks.paragraphTransform}
+                    onTransform={(v) => updateFormatTweaks("paragraphTransform", v)}
+                    transition={formatTweaks.paragraphTransition}
+                    onTransition={(v) => updateFormatTweaks("paragraphTransition", v)}
+                    animation={formatTweaks.paragraphAnimation}
+                    onAnimation={(v) => updateFormatTweaks("paragraphAnimation", v)}
+                    filter={formatTweaks.paragraphFilter}
+                    onFilter={(v) => updateFormatTweaks("paragraphFilter", v)}
+                    mixBlendMode={formatTweaks.paragraphMixBlendMode}
+                    onMixBlendMode={(v) => updateFormatTweaks("paragraphMixBlendMode", v)}
                   />
                   <ElementStyleSection
                     label="引用样式"
@@ -1137,8 +1351,30 @@ export function SettingsPane({
                     onBorderColor={(v) => updateFormatTweaks("blockquoteBorderColor", v)}
                     borderStyle={formatTweaks.blockquoteBorderStyle}
                     onBorderStyle={(v) => updateFormatTweaks("blockquoteBorderStyle", v)}
+                    borderWidth={formatTweaks.blockquoteBorderWidth}
+                    onBorderWidth={(v) => updateFormatTweaks("blockquoteBorderWidth", v)}
                     borderRadius={formatTweaks.blockquoteBorderRadius}
                     onBorderRadius={(v) => updateFormatTweaks("blockquoteBorderRadius", v)}
+                    padding={formatTweaks.blockquotePadding}
+                    onPadding={(v) => updateFormatTweaks("blockquotePadding", v)}
+                    margin={formatTweaks.blockquoteMargin}
+                    onMargin={(v) => updateFormatTweaks("blockquoteMargin", v)}
+                    textShadow={formatTweaks.blockquoteTextShadow}
+                    onTextShadow={(v) => updateFormatTweaks("blockquoteTextShadow", v)}
+                    boxShadow={formatTweaks.blockquoteBoxShadow}
+                    onBoxShadow={(v) => updateFormatTweaks("blockquoteBoxShadow", v)}
+                    opacity={formatTweaks.blockquoteOpacity}
+                    onOpacity={(v) => updateFormatTweaks("blockquoteOpacity", v)}
+                    transform={formatTweaks.blockquoteTransform}
+                    onTransform={(v) => updateFormatTweaks("blockquoteTransform", v)}
+                    transition={formatTweaks.blockquoteTransition}
+                    onTransition={(v) => updateFormatTweaks("blockquoteTransition", v)}
+                    animation={formatTweaks.blockquoteAnimation}
+                    onAnimation={(v) => updateFormatTweaks("blockquoteAnimation", v)}
+                    filter={formatTweaks.blockquoteFilter}
+                    onFilter={(v) => updateFormatTweaks("blockquoteFilter", v)}
+                    mixBlendMode={formatTweaks.blockquoteMixBlendMode}
+                    onMixBlendMode={(v) => updateFormatTweaks("blockquoteMixBlendMode", v)}
                   />
                 </div>
               </div>

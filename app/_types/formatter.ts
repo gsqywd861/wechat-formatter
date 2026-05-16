@@ -40,11 +40,77 @@ export type FormatTweaks = {
   paragraphBorderStyle?: string;
   blockquoteBorderStyle?: string;
 
+  // ── 元素级边框宽度 ──
+  h1BorderWidth?: number;
+  h2BorderWidth?: number;
+  paragraphBorderWidth?: number;
+  blockquoteBorderWidth?: number;
+
   // ── 元素级边框圆角 ──
   h1BorderRadius?: number;
   h2BorderRadius?: number;
   paragraphBorderRadius?: number;
   blockquoteBorderRadius?: number;
+
+  // ── 元素级内边距 ──
+  h1Padding?: number;
+  h2Padding?: number;
+  paragraphPadding?: number;
+  blockquotePadding?: number;
+
+  // ── 元素级外边距 ──
+  h1Margin?: number;
+  h2Margin?: number;
+  paragraphMargin?: number;
+  blockquoteMargin?: number;
+
+  // ── 元素级文字阴影 ──
+  h1TextShadow?: string;
+  h2TextShadow?: string;
+  paragraphTextShadow?: string;
+  blockquoteTextShadow?: string;
+
+  // ── 元素级盒子阴影 ──
+  h1BoxShadow?: string;
+  h2BoxShadow?: string;
+  paragraphBoxShadow?: string;
+  blockquoteBoxShadow?: string;
+
+  // ── 元素级透明度 ──
+  h1Opacity?: number;
+  h2Opacity?: number;
+  paragraphOpacity?: number;
+  blockquoteOpacity?: number;
+
+  // ── 元素级变换 ──
+  h1Transform?: string;
+  h2Transform?: string;
+  paragraphTransform?: string;
+  blockquoteTransform?: string;
+
+  // ── 元素级过渡 ──
+  h1Transition?: string;
+  h2Transition?: string;
+  paragraphTransition?: string;
+  blockquoteTransition?: string;
+
+  // ── 元素级动画 ──
+  h1Animation?: string;
+  h2Animation?: string;
+  paragraphAnimation?: string;
+  blockquoteAnimation?: string;
+
+  // ── 元素级滤镜 ──
+  h1Filter?: string;
+  h2Filter?: string;
+  paragraphFilter?: string;
+  blockquoteFilter?: string;
+
+  // ── 元素级混合模式 ──
+  h1MixBlendMode?: string;
+  h2MixBlendMode?: string;
+  paragraphMixBlendMode?: string;
+  blockquoteMixBlendMode?: string;
 
   // ── 自定义 CSS（自由输入任何 CSS 属性，会追加到元素 style 尾部）──
   h1CustomCss?: string;

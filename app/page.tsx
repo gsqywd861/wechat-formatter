@@ -195,6 +195,9 @@ export default function Home() {
         h1Style: extracted.h1Style,
         h2Style: extracted.h2Style,
         h3Style: extracted.h3Style,
+        h4Style: extracted.h4Style,
+        h5Style: extracted.h5Style,
+        h6Style: extracted.h6Style,
         pStyle: extracted.pStyle,
         blockquoteStyle: extracted.blockquoteStyle,
         blockquoteInnerBefore: extracted.blockquoteInnerBefore,
@@ -441,6 +444,30 @@ export default function Home() {
     [],
   );
 
+  // 一键粘贴：从剪贴板读取内容并粘贴到编辑器
+  const handlePasteFromClipboard = useCallback(async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        // 如果编辑器有选中的内容，替换选中内容；否则追加到末尾
+        const textarea = inputRef.current;
+        if (textarea && textarea.selectionStart !== textarea.selectionEnd) {
+          // 替换选中的内容
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
+          setInputText(prev => prev.substring(0, start) + text + prev.substring(end));
+        } else {
+          // 追加到当前光标位置或末尾
+          setInputText(text);
+        }
+        showToast(`已粘贴 ${text.length} 个字符`, "success");
+      }
+    } catch (error) {
+      console.error("读取剪贴板失败:", error);
+      showToast("无法读取剪贴板，请检查权限", "error");
+    }
+  }, [setInputText, inputRef, showToast]);
+
   return (
     <main className="h-screen overflow-hidden neo-app-bg flex flex-col font-sans relative">
       <Toast toast={toast} />
@@ -543,6 +570,7 @@ export default function Home() {
             onUndo={handleUndo}
             onRedo={handleRedo}
             onClear={handleClearInput}
+            onPasteFromClipboard={handlePasteFromClipboard}
           />
 
           <PreviewPane
@@ -568,6 +596,7 @@ export default function Home() {
             onOpenTemplateImporter={handleOpenImporter}
             userTemplates={userTemplates}
             onEditTemplate={handleEditTemplateInstance}
+            onDeleteTemplate={handleDeleteTemplate}
           />
         </div>
       </div>

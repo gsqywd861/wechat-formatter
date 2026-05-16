@@ -16,6 +16,9 @@ export interface TemplateConfig {
   h1Style: string;
   h2Style: string;
   h3Style: string;
+  h4Style: string;
+  h5Style: string;
+  h6Style: string;
   pStyle: string;
   blockquoteStyle: string;
   blockquoteInnerBefore: string;
@@ -348,6 +351,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.5em; font-weight: 700; text-align: center; margin: 28px 0; color: #faf6f0; background-color: ${color}; padding: 14px 16px; line-height: 1.4; letter-spacing: 3px; border-radius: 2px;`,
         h2Style: `font-size: 1.3em; font-weight: 700; margin: 24px 0 16px; color: #3c2415; padding: 8px 0 8px 14px; border-left: 4px solid ${color}; background-color: ${hexToRgba(color, 0.06)}; line-height: 1.4;`,
         h3Style: `font-size: 1.1em; font-weight: 600; margin: 18px 0 12px; color: ${color}; padding: 0 0 8px 0; border-bottom: 2px solid ${hexToRgba(color, 0.25)}; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.9; text-indent: 2em; color: #3c2415;",
         blockquoteStyle: `margin: 24px 0; padding: 16px 20px; color: #5c4033; background-color: #f0e8dc; border-left: 3px solid ${color}; border-radius: 0 4px 4px 0;`,
         blockquoteInnerBefore: `<span style="display: block; font-size: 2em; line-height: 1; margin-bottom: 8px; color: ${color}; font-family: 'STKaiti', 'KaiTi', serif; opacity: 0.6;">「</span>`,
@@ -381,6 +387,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.4em; font-weight: bold; text-align: center; margin: 24px 0 16px; color: ${color}; border-bottom: 1px solid ${color}; padding-bottom: 8px; line-height: 1.4;`,
         h2Style: `font-size: 1.25em; font-weight: bold; margin: 24px 0 16px; color: #111827; padding-left: 12px; border-left: 4px solid ${color}; line-height: 1.4;`,
         h3Style: `font-size: 1.1em; font-weight: bold; margin: 16px 0 12px; color: #374151; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.8; text-indent: 0;",
         blockquoteStyle: `border-left: 3px solid ${color}; margin: 20px 0; padding: 12px 16px; color: #4b5563; background-color: #f3f4f6;`,
         blockquoteInnerBefore: "",
@@ -415,6 +424,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.5em; font-weight: 800; text-align: left; margin: 24px 0 24px 0; color: ${color}; border-bottom: 3px solid ${color}; line-height: 1.4; padding-bottom: 8px;`,
         h2Style: `font-size: 1.2em; font-weight: 700; background-color: ${color}; color: #ffffff; display: inline-block; padding: 6px 16px; margin: 24px 0 16px 0; border-radius: 2px; line-height: 1.4;`,
         h3Style: `font-size: 1.1em; font-weight: bold; margin: 16px 0 12px 0; color: ${color}; border-bottom: 1px dashed ${hexToRgba(color, 0.502)}; padding-bottom: 4px; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.8; text-indent: 2em;",
         blockquoteStyle: `border-left: 6px solid ${color}; margin: 24px 0; padding: 16px; color: #475569; background-color: #f8fafc; font-weight: 500;`,
         blockquoteInnerBefore: "",
@@ -449,6 +461,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.35em; font-weight: normal; text-align: center; margin: 30px 0; color: ${color}; letter-spacing: 4px; line-height: 1.4;`,
         h2Style: `font-size: 1.15em; font-weight: normal; text-align: center; margin: 30px 0 20px; color: ${color}; padding: 8px 0; line-height: 1.4; border-top: 1px solid ${hexToRgba(color, 0.251)}; border-bottom: 1px solid ${hexToRgba(color, 0.251)}; letter-spacing: 2px; display: block;`,
         h3Style: `font-size: 1.05em; font-weight: bold; text-align: center; margin: 20px 0 16px 0; color: #374151; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 20px 0; line-height: 2.0; letter-spacing: 1px;",
         blockquoteStyle: `margin: 32px 0; padding: 20px; color: ${color}; text-align: center; font-style: italic; font-size: 0.95em; border-radius: 8px; background-color: ${hexToRgba(color, 0.031)};`,
         blockquoteInnerBefore: ``,
@@ -483,6 +498,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.6em; font-weight: bold; text-align: left; margin: 20px 0 32px 0; color: ${color === "#10b981" ? "#3b82f6" : "#10b981"}; text-transform: uppercase; letter-spacing: 2px; line-height: 1.4; border-bottom: 2px solid ${hexToRgba(color, 0.314)}; padding-bottom: 12px;`,
         h2Style: `font-size: 1.25em; font-weight: bold; margin: 30px 0 20px 0; color: #ffffff; border-left: 6px solid ${color}; padding-left: 14px; background-color: #1e293b; display: block; line-height: 1.4; padding-top: 6px; padding-bottom: 6px;`,
         h3Style: `font-size: 1.1em; font-weight: bold; margin: 20px 0 16px 0; color: ${color}; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.8; color: #cbd5e1;",
         blockquoteStyle: `border: 1px solid ${color}; margin: 24px 0; padding: 16px; color: #94a3b8; background-color: #1e293b; border-radius: 4px;`,
         blockquoteInnerBefore: `<span style="color: ${color === "#10b981" ? "#3b82f6" : "#10b981"}; margin-right: 8px;">></span>`,
@@ -512,6 +530,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.5em; font-weight: bold; text-align: center; margin: 10px 0 30px 0; color: #ffffff; background-color: ${color}; padding: 12px; border-radius: 8px; letter-spacing: 2px; line-height: 1.4;`,
         h2Style: `font-size: 1.2em; font-weight: bold; text-align: center; background-color: #fef3c7; color: ${color}; border: 2px solid ${color}; margin: 24px auto 20px auto; padding: 8px 24px; border-radius: 20px; display: inline-block; line-height: 1.4;`,
         h3Style: `font-size: 1.1em; font-weight: bold; margin: 16px 0 16px 0; color: ${color}; text-align: center; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.8; text-indent: 2em; color: #78350f;",
         blockquoteStyle: `border: 2px dashed ${color}; border-radius: 8px; margin: 24px 0; padding: 16px; color: #92400e; background-color: #fef3c7; text-align: center; font-weight: 500;`,
         blockquoteInnerBefore: ``,
@@ -541,6 +562,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.5em; font-weight: bold; text-align: center; margin: 10px 0 24px 0; color: #ffffff; background: linear-gradient(135deg, ${color} 0%, ${hexToRgba(color, 0.5)} 100%); padding: 16px; border-radius: 12px; letter-spacing: 1px; line-height: 1.4; box-shadow: 0 4px 12px ${hexToRgba(color, 0.251)};`,
         h2Style: `font-size: 1.2em; font-weight: bold; margin: 24px 0 16px 0; color: ${color}; padding-left: 14px; border-left: 4px solid ${color}; line-height: 1.4;`,
         h3Style: `font-size: 1.05em; font-weight: 600; margin: 16px 0 12px 0; color: #0c4a6e; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 14px 0; line-height: 1.8; color: #1e293b;",
         blockquoteStyle: `border-left: 4px solid ${color}; margin: 20px 0; padding: 14px 18px; color: #475569; background-color: #ffffff; border-radius: 0 8px 8px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.04); font-style: italic;`,
         blockquoteInnerBefore: ``,
@@ -570,6 +594,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.4em; font-weight: 800; margin: 20px 0 20px 0; color: #ffffff; background-color: ${color}; padding: 12px 20px; border-radius: 4px; line-height: 1.4; letter-spacing: 1px; text-transform: uppercase;`,
         h2Style: `font-size: 1.15em; font-weight: 700; margin: 24px 0 16px 0; color: #f8fafc; background-color: ${color}; padding: 8px 16px; border-radius: 2px; display: inline-block; line-height: 1.4; letter-spacing: 0.5px;`,
         h3Style: `font-size: 1.05em; font-weight: 700; margin: 16px 0 12px 0; color: ${color}; border-bottom: 2px solid ${hexToRgba(color, 0.314)}; padding-bottom: 4px; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 14px 0; line-height: 1.7; color: #334155; font-size: 0.95em;",
         blockquoteStyle: `border-left: 4px solid ${color}; margin: 24px 0; padding: 14px 18px; color: #475569; background-color: #f1f5f9; font-weight: 500;`,
         blockquoteInnerBefore: "",
@@ -599,6 +626,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.5em; font-weight: bold; text-align: center; margin: 10px 0 24px 0; color: #ffffff; background: linear-gradient(135deg, ${color} 0%, #15803d 100%); padding: 14px 20px; border-radius: 10px; line-height: 1.4; box-shadow: 0 3px 8px ${hexToRgba(color, 0.251)};`,
         h2Style: `font-size: 1.2em; font-weight: bold; margin: 24px 0 16px 0; color: #166534; background-color: ${hexToRgba(color, 0.125)}; padding: 6px 14px; border-radius: 6px; line-height: 1.4;`,
         h3Style: `font-size: 1.05em; font-weight: 600; margin: 16px 0 12px 0; color: #15803d; border-bottom: 2px solid ${hexToRgba(color, 0.314)}; padding-bottom: 4px; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 14px 0; line-height: 1.8; color: #166534;",
         blockquoteStyle: `border-left: 4px solid ${color}; margin: 24px 0; padding: 14px 18px; color: #14532d; background-color: #dcfce7; border-radius: 0 8px 8px 0;`,
         blockquoteInnerBefore: "",
@@ -628,6 +658,9 @@ function getStylesByCategory(category: string, color: string): Omit<TemplateConf
         h1Style: `font-size: 1.4em; font-weight: 800; text-align: center; margin: 10px 0 24px 0; color: #ffffff; background-color: ${color}; padding: 12px 20px; letter-spacing: 2px; line-height: 1.4; box-shadow: 0 2px 8px rgba(0,0,0,0.1);`,
         h2Style: `font-size: 1.15em; font-weight: 700; margin: 24px 0 16px 0; color: ${color}; border-left: 4px solid ${color}; padding-left: 12px; line-height: 1.4;`,
         h3Style: `font-size: 1.05em; font-weight: 600; margin: 16px 0 12px 0; color: #334155; border-bottom: 1px solid ${hexToRgba(color, 0.3)}; padding-bottom: 4px; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.8; color: #334155; text-indent: 2em;",
         blockquoteStyle: `border-left: 4px solid ${color}; margin: 20px 0; padding: 12px 16px; color: #475569; background-color: #f1f5f9; font-weight: 500;`,
         blockquoteInnerBefore: "",
@@ -675,6 +708,9 @@ function getTravelVariant(color: string, base: Omit<TemplateConfig, "id" | "name
         h1Style: `font-size: 1.5em; font-weight: 900; text-align: left; margin: 10px 0 24px 0; color: #f8fafc; background-color: ${color}; padding: 16px 20px; border-left: 6px solid ${color}; line-height: 1.3; letter-spacing: 0.5px; text-transform: uppercase;`,
         h2Style: `font-size: 1.2em; font-weight: 800; margin: 24px 0 16px 0; color: ${color}; padding: 8px 0 8px 14px; border-left: 6px solid ${color}; line-height: 1.3; text-transform: uppercase; background-color: transparent;`,
         h3Style: `font-size: 1.05em; font-weight: 700; margin: 16px 0 12px 0; color: ${color}; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 14px 0; line-height: 1.8; color: #292524; font-weight: 500;",
         blockquoteStyle: `border: 3px solid ${color}; margin: 24px 0; padding: 18px; color: #1c1917; background-color: #ffffff; font-weight: 600; font-style: italic;`,
         blockquoteInnerBefore: `<span style="display: block; font-size: 2.5em; line-height: 0.8; color: ${color}; font-family: Georgia, serif;">“</span>`,
@@ -704,6 +740,9 @@ function getTravelVariant(color: string, base: Omit<TemplateConfig, "id" | "name
         h1Style: `font-size: 1.6em; font-weight: 400; text-align: center; margin: 10px 0 28px 0; color: ${color}; border: none; background: linear-gradient(90deg, transparent 5%, ${hexToRgba(color, 0.15)} 5%, ${hexToRgba(color, 0.15)} 95%, transparent 95%); padding: 18px 20px; line-height: 1.4; font-style: italic; letter-spacing: 2px;`,
         h2Style: `font-size: 1.3em; font-weight: 600; margin: 24px 0 16px 0; color: ${color}; text-align: center; padding: 8px 0; border-top: 2px solid ${hexToRgba(color, 0.4)}; border-bottom: 2px solid ${hexToRgba(color, 0.4)}; line-height: 1.4; background: transparent;`,
         h3Style: `font-size: 1.1em; font-weight: 600; margin: 16px 0 12px 0; color: #9a3412; line-height: 1.4; text-align: center;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.9; color: #431407; text-indent: 2em;",
         blockquoteStyle: `border: none; border-left: 4px solid ${color}; margin: 24px 0; padding: 16px 20px; color: ${color}; background-color: #ffedd5; font-style: italic; border-radius: 0 12px 12px 0;`,
         blockquoteInnerBefore: "",
@@ -733,6 +772,9 @@ function getTravelVariant(color: string, base: Omit<TemplateConfig, "id" | "name
         h1Style: `font-size: 1.4em; font-weight: 300; text-align: center; margin: 10px 0 24px 0; color: #ffffff; border-bottom: 1px solid ${hexToRgba(color, 0.5)}; padding: 16px 0; line-height: 1.4; letter-spacing: 3px; text-transform: uppercase; background: transparent;`,
         h2Style: `font-size: 1.15em; font-weight: 400; margin: 24px 0 16px 0; color: #ffffff; padding-left: 12px; border-left: 3px solid ${color}; line-height: 1.4; letter-spacing: 1px; background: transparent;`,
         h3Style: `font-size: 1em; font-weight: 500; margin: 16px 0 12px 0; color: ${color}; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 14px 0; line-height: 1.9; color: #cbd5e1; font-weight: 300;",
         blockquoteStyle: `border: 1px solid ${hexToRgba(color, 0.3)}; margin: 24px 0; padding: 16px 20px; color: #e2e8f0; background-color: ${hexToRgba(color, 0.06)}; font-weight: 300; font-style: italic;`,
         blockquoteInnerBefore: `<span style="display: block; font-size: 2em; line-height: 0.6; color: ${color}; opacity: 0.5; font-family: Georgia, serif;">✦</span>`,
@@ -762,6 +804,9 @@ function getTravelVariant(color: string, base: Omit<TemplateConfig, "id" | "name
         h1Style: `font-size: 1.5em; font-weight: 700; text-align: center; margin: 10px 0 24px 0; color: #1c1917; background-color: #ffffff; border: none; border-bottom: 4px solid ${color}; padding: 12px 20px; line-height: 1.4; box-shadow: 0 4px 12px ${hexToRgba(color, 0.12)};`,
         h2Style: `font-size: 1.2em; font-weight: 700; margin: 24px 0 16px 0; color: #1c1917; display: inline-block; padding: 4px 20px 4px 0; border-bottom: 3px solid ${color}; line-height: 1.4; background: transparent;`,
         h3Style: `font-size: 1.05em; font-weight: 600; margin: 16px 0 12px 0; color: ${color}; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 14px 0; line-height: 1.8; color: #44403c;",
         blockquoteStyle: `border: none; border-left: 4px solid ${color}; margin: 20px 0; padding: 14px 18px; color: #57534e; background-color: #fefce8; border-radius: 0 12px 12px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.04);`,
         blockquoteInnerBefore: "",
@@ -799,6 +844,9 @@ function getTravel2Variant(color: string, base: Omit<TemplateConfig, "id" | "nam
     h1Style: `font-size: 1.5em; font-weight: 800; text-align: center; margin: 10px 0 24px 0; color: #ffffff; background: linear-gradient(135deg, ${color} 0%, ${hexToRgba(color, 0.7)} 100%); padding: 16px 20px; border-radius: 12px; line-height: 1.4; letter-spacing: 1px; box-shadow: 0 4px 12px ${hexToRgba(color, 0.3)};`,
     h2Style: `font-size: 1.2em; font-weight: 700; margin: 24px 0 16px 0; color: ${color}; border-left: 4px solid ${color}; padding-left: 12px; line-height: 1.4; background: transparent;`,
     h3Style: `font-size: 1.05em; font-weight: 600; margin: 16px 0 12px 0; color: #9a3412; line-height: 1.4;`,
+    h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+    h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+    h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
     pStyle: "margin: 0 0 14px 0; line-height: 1.8; color: #431407;",
     blockquoteStyle: `border-radius: 12px; border: 2px solid ${color}; margin: 20px 0; padding: 16px; color: #7c2d12; background-color: #ffffff;`,
     blockquoteInnerBefore: "",
@@ -834,6 +882,9 @@ function getTravel3Variant(color: string, base: Omit<TemplateConfig, "id" | "nam
     h1Style: `font-size: 1.4em; font-weight: 700; text-align: center; margin: 10px 0 24px 0; color: ${color}; border: none; padding: 12px 20px; line-height: 1.4; letter-spacing: 2px; border-bottom: 2px solid ${hexToRgba(color, 0.3)}; background: transparent;`,
     h2Style: `font-size: 1.15em; font-weight: 600; margin: 24px 0 16px 0; color: ${color}; border-left: 3px solid ${color}; padding-left: 12px; line-height: 1.4; background: transparent;`,
     h3Style: `font-size: 1em; font-weight: 600; margin: 16px 0 12px 0; color: #1a1a1a; line-height: 1.4;`,
+    h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+    h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+    h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
     pStyle: "margin: 0 0 14px 0; line-height: 2; color: #374151;",
     blockquoteStyle: `border: none; border-left: 3px solid ${color}; margin: 20px 0; padding: 12px 18px; color: #6b7280; background-color: #f3f4f6; font-style: italic;`,
     blockquoteInnerBefore: "",
@@ -869,6 +920,9 @@ function getTravel4Variant(color: string, base: Omit<TemplateConfig, "id" | "nam
     h1Style: `font-size: 1.5em; font-weight: 700; text-align: center; margin: 10px 0 24px 0; color: #ffffff; background-color: ${color}; padding: 16px 20px; line-height: 1.4; letter-spacing: 1px; border: 3px solid #292524; box-shadow: 4px 4px 0 #292524;`,
     h2Style: `font-size: 1.2em; font-weight: 700; margin: 24px 0 16px 0; color: ${color}; border-bottom: 2px solid ${hexToRgba(color, 0.4)}; padding-bottom: 6px; line-height: 1.4; background: transparent;`,
     h3Style: `font-size: 1.05em; font-weight: 600; margin: 16px 0 12px 0; color: #44403c; line-height: 1.4;`,
+    h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+    h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+    h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
     pStyle: "margin: 0 0 14px 0; line-height: 1.9; color: #44403c;",
     blockquoteStyle: `border: 2px solid ${color}; margin: 20px 0; padding: 16px; color: #57534e; background-color: #fffcf5; font-style: italic;`,
     blockquoteInnerBefore: "",
@@ -911,6 +965,9 @@ function getFestiveVariant(color: string, base: Omit<TemplateConfig, "id" | "nam
         h1Style: `font-size: 1.6em; font-weight: bold; text-align: center; margin: 10px 0 28px 0; color: #fbbf24; text-shadow: 0 2px 4px rgba(0,0,0,0.3); padding: 14px 20px; border: 2px solid ${color}; line-height: 1.4; letter-spacing: 4px; background: transparent;`,
         h2Style: `font-size: 1.2em; font-weight: bold; text-align: center; margin: 24px auto 20px auto; color: #fbbf24; padding: 6px 20px; display: inline-block; line-height: 1.4; border-bottom: 2px solid ${color}; background: transparent;`,
         h3Style: `font-size: 1.1em; font-weight: bold; margin: 16px 0 12px 0; color: #fbbf24; text-align: center; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.8; color: #fef2f2;",
         blockquoteStyle: `border: 2px solid ${color}; border-radius: 8px; margin: 24px 0; padding: 18px; color: #fef3c7; background-color: rgba(0,0,0,0.2); text-align: center; font-weight: 500;`,
         blockquoteInnerBefore: `<span style="display: block; font-size: 2em; line-height: 0.4; color: ${color};">❝</span>`,
@@ -940,6 +997,9 @@ function getFestiveVariant(color: string, base: Omit<TemplateConfig, "id" | "nam
         h1Style: `font-size: 1.5em; font-weight: bold; text-align: center; margin: 10px 0 30px 0; color: #ffffff; background: linear-gradient(90deg, transparent 8%, ${color} 8%, ${color} 92%, transparent 92%); padding: 14px 20px; line-height: 1.4; letter-spacing: 3px;`,
         h2Style: `font-size: 1.2em; font-weight: bold; text-align: center; margin: 24px auto 20px auto; color: ${color}; padding: 8px 0; display: inline-block; line-height: 1.4; border-top: 2px solid ${color}; border-bottom: 2px solid ${color}; background: transparent;`,
         h3Style: `font-size: 1.1em; font-weight: bold; margin: 16px 0 12px 0; color: ${color}; text-align: left; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 14px 0; line-height: 1.8; color: #d4d4d4;",
         blockquoteStyle: `border: none; border-left: 6px solid ${color}; margin: 24px 0; padding: 14px 20px; color: #a3a3a3; background-color: rgba(251,191,36,0.05); font-style: italic;`,
         listStyle: "margin: 0 0 16px 0; padding: 0; color: #d4d4d4; list-style-type: none;",
@@ -967,6 +1027,9 @@ function getFestiveVariant(color: string, base: Omit<TemplateConfig, "id" | "nam
         h1Style: `font-size: 1.5em; font-weight: bold; text-align: center; margin: 10px 0 24px 0; color: #ffffff; background: linear-gradient(135deg, ${color} 0%, #818cf8 100%); padding: 14px 20px; border-radius: 4px; line-height: 1.4; letter-spacing: 2px; box-shadow: 0 0 20px ${hexToRgba(color, 0.3)};`,
         h2Style: `font-size: 1.2em; font-weight: bold; text-align: center; margin: 24px auto 20px auto; color: #ffffff; padding: 8px 24px; display: inline-block; line-height: 1.4; border: 1px solid ${hexToRgba(color, 0.5)}; border-radius: 4px; background-color: ${hexToRgba(color, 0.1)};`,
         h3Style: `font-size: 1.1em; font-weight: bold; margin: 16px 0 12px 0; color: ${color}; text-align: center; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.8; color: #cbd5e1;",
         blockquoteStyle: `border: 1px solid ${hexToRgba(color, 0.4)}; border-radius: 4px; margin: 24px 0; padding: 16px 20px; color: #e2e8f0; background-color: ${hexToRgba(color, 0.06)}; font-weight: 400;`,
         blockquoteInnerBefore: `<span style="display: block; font-size: 1.5em; line-height: 0.4; color: ${color}; opacity: 0.6;">✦</span>`,
@@ -996,6 +1059,9 @@ function getFestiveVariant(color: string, base: Omit<TemplateConfig, "id" | "nam
         h1Style: `font-size: 1.4em; font-weight: 600; text-align: center; margin: 10px 0 24px 0; color: #ffffff; background: linear-gradient(135deg, #ec4899 0%, ${color} 100%); padding: 14px 20px; border-radius: 30px; line-height: 1.4; letter-spacing: 1px;`,
         h2Style: `font-size: 1.15em; font-weight: 600; text-align: center; margin: 24px auto 20px auto; color: ${color}; padding: 6px 20px; display: inline-block; line-height: 1.4; background-color: #ffffff; border: 2px solid ${color}; border-radius: 20px;`,
         h3Style: `font-size: 1.05em; font-weight: 600; margin: 16px 0 12px 0; color: ${color}; text-align: center; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 14px 0; line-height: 1.8; color: #831843;",
         blockquoteStyle: `border: 2px solid ${color}; border-radius: 16px; margin: 24px 0; padding: 16px; color: #9d174d; background-color: #ffffff; text-align: center; font-weight: 400;`,
         listStyle: "margin: 0 0 16px 0; padding: 0; color: #831843; list-style-type: none;",
@@ -1023,6 +1089,9 @@ function getFestiveVariant(color: string, base: Omit<TemplateConfig, "id" | "nam
         h1Style: `font-size: 1.6em; font-weight: 900; text-align: center; margin: 10px 0 28px 0; color: #292524; font-family: "STKaiti", "KaiTi", "楷体", "Noto Serif SC", serif; padding: 16px 20px; line-height: 1.4; letter-spacing: 6px; border: 2px solid ${color}; background: transparent; writing-mode: horizontal-tb;`,
         h2Style: `font-size: 1.3em; font-weight: bold; text-align: center; margin: 24px auto 20px auto; color: ${color}; font-family: "STKaiti", "KaiTi", "楷体", serif; padding: 6px 20px; display: inline-block; line-height: 1.4; border-bottom: 2px solid ${color}; background: transparent;`,
         h3Style: `font-size: 1.1em; font-weight: bold; margin: 16px 0 12px 0; color: #78716c; font-family: "STKaiti", "KaiTi", "楷体", serif; line-height: 1.4;`,
+        h4Style: "font-size: 1em; font-weight: bold; margin: 14px 0 10px;",
+        h5Style: "font-size: 0.95em; font-weight: bold; margin: 12px 0 8px;",
+        h6Style: "font-size: 0.9em; font-weight: bold; margin: 10px 0 6px;",
         pStyle: "margin: 0 0 16px 0; line-height: 1.9; color: #57534e; text-indent: 2em; font-family: system-ui, sans-serif;",
         blockquoteStyle: `border-left: 4px solid ${color}; margin: 24px 0; padding: 14px 18px; color: #57534e; background-color: #f5f0e0; font-style: italic; font-family: "STKaiti", "KaiTi", "楷体", serif;`,
         blockquoteInnerBefore: `<span style="display: block; font-size: 2em; line-height: 0.6; color: ${color}; font-family: Georgia, serif;">“</span>`,
@@ -1364,6 +1433,160 @@ export function renderArticle(
     template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "border-radius", `${formatTweaks.blockquoteBorderRadius}px`);
   }
 
+  // ── 元素级样式覆盖：边框宽度 ──
+  if (formatTweaks.h1BorderWidth !== undefined) {
+    template.h1Style = ensureStyleValue(template.h1Style, "border-width", `${formatTweaks.h1BorderWidth}px`);
+  }
+  if (formatTweaks.h2BorderWidth !== undefined) {
+    template.h2Style = ensureStyleValue(template.h2Style, "border-width", `${formatTweaks.h2BorderWidth}px`);
+  }
+  if (formatTweaks.paragraphBorderWidth !== undefined) {
+    template.pStyle = ensureStyleValue(template.pStyle, "border-width", `${formatTweaks.paragraphBorderWidth}px`);
+  }
+  if (formatTweaks.blockquoteBorderWidth !== undefined) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "border-width", `${formatTweaks.blockquoteBorderWidth}px`);
+  }
+
+  // ── 元素级样式覆盖：内边距 ──
+  if (formatTweaks.h1Padding !== undefined) {
+    template.h1Style = ensureStyleValue(template.h1Style, "padding", `${formatTweaks.h1Padding}px`);
+  }
+  if (formatTweaks.h2Padding !== undefined) {
+    template.h2Style = ensureStyleValue(template.h2Style, "padding", `${formatTweaks.h2Padding}px`);
+  }
+  if (formatTweaks.paragraphPadding !== undefined) {
+    template.pStyle = ensureStyleValue(template.pStyle, "padding", `${formatTweaks.paragraphPadding}px`);
+  }
+  if (formatTweaks.blockquotePadding !== undefined) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "padding", `${formatTweaks.blockquotePadding}px`);
+  }
+
+  // ── 元素级样式覆盖：外边距 ──
+  if (formatTweaks.h1Margin !== undefined) {
+    template.h1Style = ensureStyleValue(template.h1Style, "margin", `${formatTweaks.h1Margin}px 0`);
+  }
+  if (formatTweaks.h2Margin !== undefined) {
+    template.h2Style = ensureStyleValue(template.h2Style, "margin", `${formatTweaks.h2Margin}px 0`);
+  }
+  if (formatTweaks.paragraphMargin !== undefined) {
+    template.pStyle = ensureStyleValue(template.pStyle, "margin", `${formatTweaks.paragraphMargin}px 0`);
+  }
+  if (formatTweaks.blockquoteMargin !== undefined) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "margin", `${formatTweaks.blockquoteMargin}px 0`);
+  }
+
+  // ── 元素级样式覆盖：文字阴影 ──
+  if (formatTweaks.h1TextShadow) {
+    template.h1Style = ensureStyleValue(template.h1Style, "text-shadow", formatTweaks.h1TextShadow);
+  }
+  if (formatTweaks.h2TextShadow) {
+    template.h2Style = ensureStyleValue(template.h2Style, "text-shadow", formatTweaks.h2TextShadow);
+  }
+  if (formatTweaks.paragraphTextShadow) {
+    template.pStyle = ensureStyleValue(template.pStyle, "text-shadow", formatTweaks.paragraphTextShadow);
+  }
+  if (formatTweaks.blockquoteTextShadow) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "text-shadow", formatTweaks.blockquoteTextShadow);
+  }
+
+  // ── 元素级样式覆盖：盒子阴影 ──
+  if (formatTweaks.h1BoxShadow) {
+    template.h1Style = ensureStyleValue(template.h1Style, "box-shadow", formatTweaks.h1BoxShadow);
+  }
+  if (formatTweaks.h2BoxShadow) {
+    template.h2Style = ensureStyleValue(template.h2Style, "box-shadow", formatTweaks.h2BoxShadow);
+  }
+  if (formatTweaks.paragraphBoxShadow) {
+    template.pStyle = ensureStyleValue(template.pStyle, "box-shadow", formatTweaks.paragraphBoxShadow);
+  }
+  if (formatTweaks.blockquoteBoxShadow) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "box-shadow", formatTweaks.blockquoteBoxShadow);
+  }
+
+  // ── 元素级样式覆盖：透明度 ──
+  if (formatTweaks.h1Opacity !== undefined) {
+    template.h1Style = ensureStyleValue(template.h1Style, "opacity", String(formatTweaks.h1Opacity));
+  }
+  if (formatTweaks.h2Opacity !== undefined) {
+    template.h2Style = ensureStyleValue(template.h2Style, "opacity", String(formatTweaks.h2Opacity));
+  }
+  if (formatTweaks.paragraphOpacity !== undefined) {
+    template.pStyle = ensureStyleValue(template.pStyle, "opacity", String(formatTweaks.paragraphOpacity));
+  }
+  if (formatTweaks.blockquoteOpacity !== undefined) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "opacity", String(formatTweaks.blockquoteOpacity));
+  }
+
+  // ── 元素级样式覆盖：变换 ──
+  if (formatTweaks.h1Transform) {
+    template.h1Style = ensureStyleValue(template.h1Style, "transform", formatTweaks.h1Transform);
+  }
+  if (formatTweaks.h2Transform) {
+    template.h2Style = ensureStyleValue(template.h2Style, "transform", formatTweaks.h2Transform);
+  }
+  if (formatTweaks.paragraphTransform) {
+    template.pStyle = ensureStyleValue(template.pStyle, "transform", formatTweaks.paragraphTransform);
+  }
+  if (formatTweaks.blockquoteTransform) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "transform", formatTweaks.blockquoteTransform);
+  }
+
+  // ── 元素级样式覆盖：过渡 ──
+  if (formatTweaks.h1Transition) {
+    template.h1Style = ensureStyleValue(template.h1Style, "transition", formatTweaks.h1Transition);
+  }
+  if (formatTweaks.h2Transition) {
+    template.h2Style = ensureStyleValue(template.h2Style, "transition", formatTweaks.h2Transition);
+  }
+  if (formatTweaks.paragraphTransition) {
+    template.pStyle = ensureStyleValue(template.pStyle, "transition", formatTweaks.paragraphTransition);
+  }
+  if (formatTweaks.blockquoteTransition) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "transition", formatTweaks.blockquoteTransition);
+  }
+
+  // ── 元素级样式覆盖：动画 ──
+  if (formatTweaks.h1Animation) {
+    template.h1Style = ensureStyleValue(template.h1Style, "animation", formatTweaks.h1Animation);
+  }
+  if (formatTweaks.h2Animation) {
+    template.h2Style = ensureStyleValue(template.h2Style, "animation", formatTweaks.h2Animation);
+  }
+  if (formatTweaks.paragraphAnimation) {
+    template.pStyle = ensureStyleValue(template.pStyle, "animation", formatTweaks.paragraphAnimation);
+  }
+  if (formatTweaks.blockquoteAnimation) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "animation", formatTweaks.blockquoteAnimation);
+  }
+
+  // ── 元素级样式覆盖：滤镜 ──
+  if (formatTweaks.h1Filter) {
+    template.h1Style = ensureStyleValue(template.h1Style, "filter", formatTweaks.h1Filter);
+  }
+  if (formatTweaks.h2Filter) {
+    template.h2Style = ensureStyleValue(template.h2Style, "filter", formatTweaks.h2Filter);
+  }
+  if (formatTweaks.paragraphFilter) {
+    template.pStyle = ensureStyleValue(template.pStyle, "filter", formatTweaks.paragraphFilter);
+  }
+  if (formatTweaks.blockquoteFilter) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "filter", formatTweaks.blockquoteFilter);
+  }
+
+  // ── 元素级样式覆盖：混合模式 ──
+  if (formatTweaks.h1MixBlendMode) {
+    template.h1Style = ensureStyleValue(template.h1Style, "mix-blend-mode", formatTweaks.h1MixBlendMode);
+  }
+  if (formatTweaks.h2MixBlendMode) {
+    template.h2Style = ensureStyleValue(template.h2Style, "mix-blend-mode", formatTweaks.h2MixBlendMode);
+  }
+  if (formatTweaks.paragraphMixBlendMode) {
+    template.pStyle = ensureStyleValue(template.pStyle, "mix-blend-mode", formatTweaks.paragraphMixBlendMode);
+  }
+  if (formatTweaks.blockquoteMixBlendMode) {
+    template.blockquoteStyle = ensureStyleValue(template.blockquoteStyle, "mix-blend-mode", formatTweaks.blockquoteMixBlendMode);
+  }
+
   // ── 自定义 CSS：追加到模板样式尾部（用于用户手动微调）──
   if (formatTweaks.h1CustomCss) {
     template.h1Style += ` ${formatTweaks.h1CustomCss}`;
@@ -1473,7 +1696,10 @@ export function renderArticle(
     let baseStyle = "";
     if (depth === 1) baseStyle = template.h1Style;
     else if (depth === 2) baseStyle = template.h2Style;
-    else baseStyle = template.h3Style;
+    else if (depth === 3) baseStyle = template.h3Style;
+    else if (depth === 4) baseStyle = template.h4Style || template.h3Style;
+    else if (depth === 5) baseStyle = template.h5Style || template.h3Style;
+    else baseStyle = template.h6Style || template.h3Style;
 
     const s = bgFallback(baseStyle);
 
