@@ -1,19 +1,24 @@
 "use client";
 
-import { Download, Link, Loader2, Sparkles, X } from "lucide-react";
+import { Download, Link, Loader2, Palette, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import type { ExtractionResult } from "../_lib/template-extractor";
+import { LearningProgress } from "./learning-progress";
 
 type TemplateImporterProps = {
   open: boolean;
   onClose: () => void;
-  onTemplateExtracted: (result: ExtractionResult) => void;
+  onTemplateExtracted: (result: ExtractionResult, htmlSnapshot?: string) => void;
+  onAdvancedEdit?: (result: ExtractionResult) => void;
+  deviceId?: string;
 };
 
 export function TemplateImporter({
   open,
   onClose,
   onTemplateExtracted,
+  onAdvancedEdit,
+  deviceId,
 }: TemplateImporterProps) {
   const [mode, setMode] = useState<"paste" | "url">("paste");
   const [htmlInput, setHtmlInput] = useState("");
@@ -21,6 +26,7 @@ export function TemplateImporter({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ExtractionResult | null>(null);
+  const [lastHtmlSnapshot, setLastHtmlSnapshot] = useState<string>("");
 
   if (!open) return null;
 
@@ -45,10 +51,14 @@ export function TemplateImporter({
 
     setIsLoading(true);
     try {
+      // 保存HTML快照用于后续学习
+      const htmlSnapshot = mode === "paste" ? htmlInput.trim() : "";
+      setLastHtmlSnapshot(htmlSnapshot);
+
       const resp = await fetch("/api/extract-template", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ ...body, deviceId }),
       });
 
       const data = await resp.json();
@@ -64,6 +74,16 @@ export function TemplateImporter({
       }
 
       setResult(data.template);
+      
+      // 记录提取结果到学习系统（异步）
+      if (deviceId && htmlSnapshot) {
+        try {
+          const { reportExtractionToCloud } = await import("../_lib/template-learning");
+          await reportExtractionToCloud(deviceId, htmlSnapshot, data.template);
+        } catch {
+          // 学习系统报告失败不影响主流程
+        }
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "网络请求失败，请稍后重试",
@@ -75,10 +95,11 @@ export function TemplateImporter({
 
   const handleSave = () => {
     if (result) {
-      onTemplateExtracted(result);
+      onTemplateExtracted(result, lastHtmlSnapshot);
       setResult(null);
       setHtmlInput("");
       setUrlInput("");
+      setLastHtmlSnapshot("");
       onClose();
     }
   };
@@ -87,6 +108,7 @@ export function TemplateImporter({
     setResult(null);
     setHtmlInput("");
     setUrlInput("");
+    setLastHtmlSnapshot("");
     setError(null);
     onClose();
   };
@@ -110,6 +132,11 @@ export function TemplateImporter({
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-5 space-y-5">
+          {/* 学习进度面板 */}
+          {!result && deviceId && (
+            <LearningProgress deviceId={deviceId} />
+          )}
+
           {result ? (
             /* 提取成功预览 */
             <div className="space-y-5">
@@ -248,13 +275,25 @@ export function TemplateImporter({
 
         {/* Footer */}
         {result && (
-          <div className="border-t border-(--neo-line) p-4 flex gap-3">
+          <div className="border-t border-(--neo-line) p-4 flex gap-2">
             <button
               onClick={() => setResult(null)}
               className="neo-button neo-button-ghost flex-1 py-2.5 text-sm font-semibold"
             >
               重新提取
             </button>
+            {onAdvancedEdit && (
+              <button
+                onClick={() => {
+                  onAdvancedEdit(result);
+                  handleClose();
+                }}
+                className="neo-button flex-1 py-2.5 text-sm font-semibold flex items-center justify-center gap-1.5"
+              >
+                <Palette className="w-4 h-4" />
+                高级编辑
+              </button>
+            )}
             <button
               onClick={handleSave}
               className="neo-button neo-button-primary flex-1 py-2.5 text-sm font-semibold"

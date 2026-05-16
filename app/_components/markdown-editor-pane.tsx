@@ -212,9 +212,6 @@ export function MarkdownEditorPane({
         <button onClick={() => insertHeading(1)} className="neo-toolbar-button p-1.5 text-sm font-bold" title="一级标题">H1</button>
         <button onClick={() => insertHeading(2)} className="neo-toolbar-button p-1.5 text-sm font-bold" title="二级标题">H2</button>
         <button onClick={() => insertHeading(3)} className="neo-toolbar-button p-1.5 text-sm font-bold" title="三级标题">H3</button>
-        <button onClick={() => insertHeading(4)} className="neo-toolbar-button p-1.5 text-xs font-bold" title="四级标题">H4</button>
-        <button onClick={() => insertHeading(5)} className="neo-toolbar-button p-1.5 text-xs font-bold" title="五级标题">H5</button>
-        <button onClick={() => insertHeading(6)} className="neo-toolbar-button p-1.5 text-xs font-bold" title="六级标题">H6</button>
         <button onClick={() => insertMarkdown("**", "**", "加粗")} className="neo-toolbar-button p-1.5 font-bold text-sm" title="加粗 (Ctrl+B)">
           <span className="text-[13px]">B</span>
         </button>

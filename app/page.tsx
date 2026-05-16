@@ -10,7 +10,7 @@ import { MarkdownEditorPane } from "./_components/markdown-editor-pane";
 import { PreviewPane } from "./_components/preview-pane";
 import { RewardModal } from "./_components/reward-modal";
 import { SettingsPane } from "./_components/settings-pane";
-import { TemplateEditor } from "./_components/template-editor";
+import { TemplateEditorEnhanced } from "./_components/template-editor-enhanced";
 import { TemplateImporter } from "./_components/template-importer";
 import { Toast } from "./_components/toast";
 import { sampleText } from "./_lib/formatter-constants";
@@ -182,7 +182,7 @@ export default function Home() {
 
   // Handle template extraction result
   const handleTemplateExtracted = useCallback(
-    (extracted: ExtractionResult) => {
+    async (extracted: ExtractionResult, htmlSnapshot?: string) => {
       const newTemplate: TemplateConfig = {
         id: `user-${Date.now()}`,
         name: extracted.name,
@@ -195,9 +195,9 @@ export default function Home() {
         h1Style: extracted.h1Style,
         h2Style: extracted.h2Style,
         h3Style: extracted.h3Style,
-        h4Style: extracted.h4Style,
-        h5Style: extracted.h5Style,
-        h6Style: extracted.h6Style,
+        h4Style: (extracted as any).h4Style || "",
+        h5Style: (extracted as any).h5Style || "",
+        h6Style: (extracted as any).h6Style || "",
         pStyle: extracted.pStyle,
         blockquoteStyle: extracted.blockquoteStyle,
         blockquoteInnerBefore: extracted.blockquoteInnerBefore,
@@ -228,12 +228,27 @@ export default function Home() {
       setCurrentTemplateId(newTemplate.id);
       setFormatTweaks((prev) => ({ ...prev, themeColor: newTemplate.themeColor }));
 
+      // 报告修正数据到学习系统（异步，不阻塞）
+      if (htmlSnapshot && deviceIdRef.current) {
+        try {
+          const { reportCorrectionToCloud } = await import("./_lib/template-learning");
+          await reportCorrectionToCloud(
+            deviceIdRef.current,
+            htmlSnapshot,
+            extracted,
+            newTemplate as unknown as Record<string, string>,
+          );
+        } catch {
+          // 学习系统报告失败不影响主流程
+        }
+      }
+
       showToast("模板已保存到「我的模板」", "success");
     },
     [userTemplates, showToast],
   );
 
-  // Handle template edit
+  // Handle template edit (enhanced editor keeps editing after save)
   const handleEditTemplate = useCallback(
     (updated: TemplateConfig) => {
       const updatedList = userTemplates.map((t) =>
@@ -241,8 +256,9 @@ export default function Home() {
       );
       setUserTemplates(updatedList);
       saveUserTemplates(updatedList);
-      setEditTemplate(null);
-      showToast("模板已更新", "success");
+      // 关键修复：同时更新 editTemplate，否则编辑器显示的永远是旧数据
+      setEditTemplate(updated);
+      showToast("模板样式已更新", "success");
     },
     [userTemplates, showToast],
   );
@@ -508,10 +524,48 @@ export default function Home() {
         open={showTemplateImporter}
         onClose={handleCloseImporter}
         onTemplateExtracted={handleTemplateExtracted}
+        onAdvancedEdit={(result) => {
+          setEditTemplate({
+            id: `temp-${Date.now()}`,
+            name: result.name || "新模板",
+            desc: result.description || "",
+            category: result.category || "custom",
+            themeColor: result.themeColor || "#c53d43",
+            backgroundColor: result.backgroundColor || "#ffffff",
+            baseStyle: result.baseStyle || { color: "#374151", fontFamily: "system-ui, -apple-system, sans-serif" },
+            containerStyle: result.containerStyle || "",
+            h1Style: result.h1Style || "",
+            h2Style: result.h2Style || "",
+            h3Style: result.h3Style || "",
+            h4Style: (result as any).h4Style || "",
+            h5Style: (result as any).h5Style || "",
+            h6Style: (result as any).h6Style || "",
+            pStyle: result.pStyle || "",
+            blockquoteStyle: result.blockquoteStyle || "",
+            blockquoteInnerBefore: result.blockquoteInnerBefore || "",
+            blockquoteInnerAfter: result.blockquoteInnerAfter || "",
+            listStyle: result.listStyle || "",
+            listItemStyle: result.listItemStyle || "",
+            listIcon: result.listIcon || "",
+            strongStyle: result.strongStyle || "",
+            emStyle: result.emStyle || "",
+            codeContainerStyle: result.codeContainerStyle || "",
+            codeHeaderStyle: result.codeHeaderStyle || "",
+            codeBlockStyle: result.codeBlockStyle || "",
+            imgStyle: result.imgStyle || "",
+            hrStyle: result.hrStyle || "",
+            linkStyle: result.linkStyle || "",
+            tableStyle: result.tableStyle || "",
+            thStyle: result.thStyle || "",
+            tdStyle: result.tdStyle || "",
+            delStyle: result.delStyle || "",
+          });
+        }}
+        deviceId={deviceIdRef.current || undefined}
       />
 
       {editTemplate && (
-        <TemplateEditor
+        <TemplateEditorEnhanced
           template={editTemplate}
           open
           onClose={handleCloseTemplateEditor}
